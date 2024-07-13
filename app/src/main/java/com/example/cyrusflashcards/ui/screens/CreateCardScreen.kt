@@ -21,9 +21,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.cyrusflashcards.CyrusViewModel
 
 @Composable
-fun CreateCardScreen (navController: NavController){
+fun CreateCardScreen (navController: NavController, viewModel: CyrusViewModel){
     var nameText by remember { mutableStateOf("") }
     var imageText by remember { mutableStateOf("") }
     Column (
@@ -31,6 +32,7 @@ fun CreateCardScreen (navController: NavController){
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
+
     ) {
         //icon that can later be replaced by an image
         Icon(
@@ -55,7 +57,13 @@ fun CreateCardScreen (navController: NavController){
         )
         //Button to create the card
         Button (
-            onClick = {}
+            onClick = {
+                //find the deck in DataSource that corresponds to the
+                //deck in currentDeck and add a card?
+                viewModel.createCard(nameText, imageText)
+                navController.popBackStack()
+
+            }
         ) {
             Text("Create Card")
         }

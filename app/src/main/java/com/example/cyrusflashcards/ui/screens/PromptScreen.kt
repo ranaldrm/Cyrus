@@ -5,24 +5,26 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.cyrusflashcards.CyrusViewModel
-import com.example.cyrusflashcards.data.CyrusDeck
 
 @Composable
-fun DeckScreen(navController: NavController, viewModel: CyrusViewModel) {
-//    val uiState by viewModel.uiState.collectAsState()
-//    val deck: CyrusDeck = uiState.currentDeck
-    val deck: CyrusDeck = viewModel.currentDeck
+fun PromptScreen (
+    navController: NavController,
+    viewModel: CyrusViewModel
+) {
+
     Column (
         modifier = Modifier
             .fillMaxSize(),
@@ -30,23 +32,30 @@ fun DeckScreen(navController: NavController, viewModel: CyrusViewModel) {
         verticalArrangement = Arrangement.Center
     ) {
         Spacer (modifier = Modifier.height(16.dp))
-        //have to use the extra stuff cos name is currenlt nullable
-        Text(deck.name)
+        Text(
+            text = "Review Card \n Remember the name",
+            modifier = Modifier.padding(16.dp)
+        )
         Spacer (modifier = Modifier.height(16.dp))
+        Icon(
+            imageVector = Icons.Default.Person,
+            contentDescription = "person",
+            modifier = Modifier.size(100.dp)
+        )
+        //wrapping for nullable - can I get rid of this?
+        Text(
+            text = viewModel.currentCard.imageURL
+        )
         Button(
-            onClick ={ navController.navigate("prompt")}
+            onClick ={ navController.navigate("answer")}
         ) {
-            Text("Review Cards")
-        }
-        Button(
-            onClick ={ navController.navigate("create_card")}
-        ) {
-            Text("Add a Card")
+            Text("Show Answer")
         }
 
 
-        Spacer (modifier = Modifier.height(16.dp))
 
     }
+
+
 
 }

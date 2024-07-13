@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+
 }
 
 android {
@@ -69,4 +70,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     //for viewmodel- from course
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
+    //for Room -from course
+
+
 }

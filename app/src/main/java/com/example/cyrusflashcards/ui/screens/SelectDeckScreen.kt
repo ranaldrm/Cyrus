@@ -34,9 +34,11 @@ import com.example.cyrusflashcards.data.DataSource
 @Composable
 fun SelectDeckScreen(
     navController: NavController,
-    viewModel: CyrusViewModel = viewModel()
+    viewModel: CyrusViewModel
 
 ) {
+
+    //maybe delete? do I need a uiState seperate from ViewModel?
     val uiState by viewModel.uiState.collectAsState()
     Column (
         modifier = Modifier
@@ -52,35 +54,39 @@ fun SelectDeckScreen(
             Text("Create a new Deck")
         }
         //way into the data
-        ScrollDecks(decks = DataSource.decks)
+        ScrollDecks(decks = DataSource.decks, viewModel, navController)
         Spacer(modifier = Modifier.height(32.dp))
 
     }
 }
 
 @Composable
-fun ScrollDecks(decks: List<CyrusDeck>) {
+fun ScrollDecks(decks: List<CyrusDeck>, viewModel: CyrusViewModel, navController: NavController) {
     LazyColumn {
         items(decks) { deck ->
-            DeckView(deck)
+            DeckView(deck, viewModel, navController)
         }
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DeckView(deck: CyrusDeck) {
+fun DeckView(deck: CyrusDeck, viewModel: CyrusViewModel, navController: NavController) {
     Card(
 
         //need to feed back event
-        onClick = { },
+        onClick = {
+            viewModel.selectDeck(deck)
+            navController.navigate("deck")
+
+                  },
         modifier = Modifier
             .padding(8.dp)
             .border(BorderStroke(2.dp, Color.Black)),
     ) {
         Column(modifier = Modifier.padding(8.dp)) {
             //required because name currently nullable, may change
-            deck.name?.let {
+            deck.name.let {
                 Text(
                     text = it
                 )

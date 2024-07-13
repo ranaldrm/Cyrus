@@ -6,17 +6,21 @@ import androidx.compose.runtime.getValue
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.cyrusflashcards.ui.screens.AnswerScreen
 import com.example.cyrusflashcards.ui.screens.CreateCardScreen
 import com.example.cyrusflashcards.ui.screens.CreateDeckScreen
+import com.example.cyrusflashcards.ui.screens.DeckFinishedScreen
 import com.example.cyrusflashcards.ui.screens.DeckScreen
 import com.example.cyrusflashcards.ui.screens.HomeScreen
-import com.example.cyrusflashcards.ui.screens.ReviewCardsScreen
+import com.example.cyrusflashcards.ui.screens.PromptScreen
+
 import com.example.cyrusflashcards.ui.screens.SelectDeckScreen
 
 
 @Composable
 fun AppNavigation (){
     val viewModel = CyrusViewModel()
+    //do I need the uiState below?
     val uiState by viewModel.uiState.collectAsState()
 
     //create a navController to move round app
@@ -28,19 +32,25 @@ fun AppNavigation (){
             HomeScreen(navController)
         }
         composable("create_card"){
-            CreateCardScreen(navController)
+            CreateCardScreen(navController, viewModel)
         }
-        composable("review"){
-            ReviewCardsScreen(navController)
+        composable("prompt"){
+            PromptScreen(navController, viewModel)
         }
         composable("deck_select"){
             SelectDeckScreen(navController, viewModel)
         }
         composable("deck") {
-            DeckScreen(navController)
+            DeckScreen(navController, viewModel)
         }
         composable("create_deck") {
             CreateDeckScreen(navController)
+        }
+        composable("answer") {
+            AnswerScreen(navController, viewModel)
+        }
+        composable("finished") {
+            DeckFinishedScreen(navController, viewModel)
         }
     }
 }

@@ -48,8 +48,14 @@ object DataSource {
 
     val decks = mutableListOf(deck1, deck2, deck3, deck4, deck5, deck6, deck7, deck8, deck9, deck10)
 
-    fun addDeck(name: String) {
+    fun addDeck(name: String ) {
         val newDeck = CyrusDeck(name)
         decks.add(newDeck)
     }
+
+    fun addCard(deck: CyrusDeck, name: String, url: String) {
+        deck.addCard(CyrusCard(name,url))
+    }
+
+
 }
