@@ -19,9 +19,10 @@ import com.example.cyrusflashcards.ui.screens.SelectDeckScreen
 
 @Composable
 fun AppNavigation (){
+    val application =CyrusApplication()
     val viewModel = CyrusViewModel()
     //do I need the uiState below?
-    val uiState by viewModel.uiState.collectAsState()
+//    val uiState by viewModel.uiState.collectAsState()
 
     //create a navController to move round app
     val navController = rememberNavController()
@@ -44,7 +45,7 @@ fun AppNavigation (){
             DeckScreen(navController, viewModel)
         }
         composable("create_deck") {
-            CreateDeckScreen(navController)
+            CreateDeckScreen(navController, viewModel)
         }
         composable("answer") {
             AnswerScreen(navController, viewModel)

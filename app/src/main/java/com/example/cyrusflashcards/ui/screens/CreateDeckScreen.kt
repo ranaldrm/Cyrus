@@ -17,11 +17,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.cyrusflashcards.CyrusViewModel
 import com.example.cyrusflashcards.data.CyrusDeck
 import com.example.cyrusflashcards.data.DataSource
 
 @Composable
-fun CreateDeckScreen (navController: NavController) {
+fun CreateDeckScreen (
+    navController: NavController,
+    viewModel: CyrusViewModel
+
+) {
     var nameText by remember { mutableStateOf("") }
     Column (
         modifier = Modifier
@@ -43,8 +48,8 @@ fun CreateDeckScreen (navController: NavController) {
         //Button to create the card
         Button (
             onClick = {
-                val deck = CyrusDeck(nameText)
-                DataSource.decks.add(deck)
+
+                viewModel.createDeck(nameText)
                 //Use popBackStack to go back to previous screen
 //
                 navController.popBackStack()

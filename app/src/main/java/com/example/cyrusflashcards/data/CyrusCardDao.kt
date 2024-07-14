@@ -7,12 +7,12 @@ import androidx.room.Query
 
 interface CyrusCardDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertCard(card: CyrusCard): Long
+    suspend fun addCard(card: CyrusCard): Long
 
-    @Query("SELECT * FROM cyrus_card WHERE id = :id")
+    @Query("SELECT * FROM cyrus_card WHERE cardId = :id")
     suspend fun getCardById(id: Int): CyrusCard?
 
-    @Query("SELECT * FROM cyrus_card WHERE deck_id = :deckId")
+    @Query("SELECT * FROM cyrus_card WHERE deckId = :deckId")
     suspend fun getCardsForDeck(deckId: Int): List<CyrusCard>
 
     @Delete

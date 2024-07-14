@@ -37,9 +37,11 @@ fun SelectDeckScreen(
     viewModel: CyrusViewModel
 
 ) {
+    val decks by viewModel.getAllDecks().collectAsState(initial = emptyList())
+
 
     //maybe delete? do I need a uiState seperate from ViewModel?
-    val uiState by viewModel.uiState.collectAsState()
+//    val uiState by viewModel.uiState.collectAsState()
     Column (
         modifier = Modifier
             .fillMaxSize()
@@ -54,7 +56,7 @@ fun SelectDeckScreen(
             Text("Create a new Deck")
         }
         //way into the data
-        ScrollDecks(decks = DataSource.decks, viewModel, navController)
+        ScrollDecks(decks = decks, viewModel, navController)
         Spacer(modifier = Modifier.height(32.dp))
 
     }
@@ -92,7 +94,7 @@ fun DeckView(deck: CyrusDeck, viewModel: CyrusViewModel, navController: NavContr
                 )
             }
             Text (
-                text = "Deck Size: ${deck.cards?.size}"
+                text = "Deck Size: To do....."
             )
         }
     }

@@ -20,7 +20,6 @@ data class CyrusDeck (
     @PrimaryKey(autoGenerate = true)
     val deckId: Int = 0,
     val name: String,
-    val cards: MutableList<CyrusCard> = mutableListOf()
 )
 //) {
 //    val deckSize: Int

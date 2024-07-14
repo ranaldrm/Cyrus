@@ -43,9 +43,11 @@ fun PromptScreen (
             modifier = Modifier.size(100.dp)
         )
         //wrapping for nullable - can I get rid of this?
-        Text(
-            text = viewModel.currentCard.imageURL
-        )
+        viewModel.currentCard?.let {
+            Text(
+                text = it.imageURL
+            )
+        }
         Button(
             onClick ={ navController.navigate("answer")}
         ) {

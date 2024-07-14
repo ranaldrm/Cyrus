@@ -22,7 +22,7 @@ import com.example.cyrusflashcards.data.CyrusDeck
 fun DeckScreen(navController: NavController, viewModel: CyrusViewModel) {
 //    val uiState by viewModel.uiState.collectAsState()
 //    val deck: CyrusDeck = uiState.currentDeck
-    val deck: CyrusDeck = viewModel.currentDeck
+    val deck: CyrusDeck? = viewModel.currentDeck
     Column (
         modifier = Modifier
             .fillMaxSize(),
@@ -31,7 +31,9 @@ fun DeckScreen(navController: NavController, viewModel: CyrusViewModel) {
     ) {
         Spacer (modifier = Modifier.height(16.dp))
         //have to use the extra stuff cos name is currenlt nullable
-        Text(deck.name)
+        if (deck != null) {
+            Text(deck.name)
+        }
         Spacer (modifier = Modifier.height(16.dp))
         Button(
             onClick ={ navController.navigate("prompt")}

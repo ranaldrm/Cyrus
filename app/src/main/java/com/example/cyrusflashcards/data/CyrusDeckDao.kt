@@ -7,7 +7,7 @@ import androidx.room.Query
 
 interface CyrusDeckDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertDeck(deck: CyrusDeck): Long
+    suspend fun createDeck(deck: CyrusDeck): Long
 
     @Query("SELECT * FROM cyrus_deck")
     suspend fun getAllDecks(): List<CyrusDeck>
