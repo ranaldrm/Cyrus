@@ -1,7 +1,9 @@
 package com.example.cyrusflashcards
 
 import androidx.lifecycle.ViewModel
+import androidx.room.Room
 import com.example.cyrusflashcards.data.CyrusCard
+import com.example.cyrusflashcards.data.CyrusDatabase
 import com.example.cyrusflashcards.data.CyrusDeck
 import com.example.cyrusflashcards.data.CyrusUiState
 import com.example.cyrusflashcards.data.DataSource
@@ -12,7 +14,9 @@ class CyrusViewModel: ViewModel() {
     //this collects from the UIState and exposes an immutable version to the other
     //classes (I think?)
     private val _uiState = MutableStateFlow(CyrusUiState())
-    val uiState: StateFlow<CyrusUiState> get() = _uiState
+    private val database = (application as CyrusApplication).database
+
+
 
 
 //need to review 'value' and 'copy'
