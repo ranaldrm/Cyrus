@@ -13,6 +13,8 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -23,7 +25,10 @@ import com.example.cyrusflashcards.CyrusViewModel
 fun PromptScreen (
     navController: NavController,
     viewModel: CyrusViewModel
+
 ) {
+    val currentDeck by viewModel.getCurrentDeck().collectAsState(initial = null)
+    val currentCard by viewModel.getCurrentCard().collectAsState(initial = null)
 
     Column (
         modifier = Modifier
@@ -43,11 +48,8 @@ fun PromptScreen (
             modifier = Modifier.size(100.dp)
         )
         //wrapping for nullable - can I get rid of this?
-        viewModel.currentCard?.let {
-            Text(
-                text = it.imageURL
-            )
-        }
+        currentCard?.let { Text(it.imageURL) }
+
         Button(
             onClick ={ navController.navigate("answer")}
         ) {

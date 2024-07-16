@@ -36,7 +36,7 @@ fun CreateDeckScreen (
     )
     {
         Spacer (modifier = Modifier.height(16.dp))
-        Text("Create a dard")
+        Text("Create a Deck")
         Spacer (modifier = Modifier.height(16.dp))
 
         TextField(

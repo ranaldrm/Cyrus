@@ -60,7 +60,8 @@ fun CreateCardScreen (navController: NavController, viewModel: CyrusViewModel){
             onClick = {
                 //find the deck in DataSource that corresponds to the
                 //deck in currentDeck and add a card?
-                viewModel.createCard(nameText, imageText)
+                val currentDeckID = viewModel.currentDeckID
+                viewModel.createCard(currentDeckID, nameText, imageText)
                 navController.popBackStack()
 
             }

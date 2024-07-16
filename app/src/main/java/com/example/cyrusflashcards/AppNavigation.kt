@@ -1,8 +1,11 @@
 package com.example.cyrusflashcards
 
+import android.app.Application
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -19,8 +22,13 @@ import com.example.cyrusflashcards.ui.screens.SelectDeckScreen
 
 @Composable
 fun AppNavigation (){
-    val application =CyrusApplication()
-    val viewModel = CyrusViewModel()
+    val context = LocalContext.current
+    val application = context.applicationContext as Application
+
+    // Use the ViewModelFactory to obtain an instance of the ViewModel
+    val viewModel: CyrusViewModel = viewModel(factory = CyrusViewModelFactory(application))
+
+
     //do I need the uiState below?
 //    val uiState by viewModel.uiState.collectAsState()
 

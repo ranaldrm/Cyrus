@@ -1,5 +1,6 @@
 package com.example.cyrusflashcards.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -40,6 +41,8 @@ fun SelectDeckScreen(
     val decks by viewModel.getAllDecks().collectAsState(initial = emptyList())
 
 
+
+
     //maybe delete? do I need a uiState seperate from ViewModel?
 //    val uiState by viewModel.uiState.collectAsState()
     Column (
@@ -75,10 +78,12 @@ fun ScrollDecks(decks: List<CyrusDeck>, viewModel: CyrusViewModel, navController
 @Composable
 fun DeckView(deck: CyrusDeck, viewModel: CyrusViewModel, navController: NavController) {
     Card(
-
         //need to feed back event
         onClick = {
+            Log.d("DeckScreen", "Deck clicked")
             viewModel.selectDeck(deck)
+            Log.d("DeckScreen", "currentDeck is null: ${viewModel.currentDeckID == null}")
+
             navController.navigate("deck")
 
                   },
@@ -94,7 +99,7 @@ fun DeckView(deck: CyrusDeck, viewModel: CyrusViewModel, navController: NavContr
                 )
             }
             Text (
-                text = "Deck Size: To do....."
+                text = "Deck contains... cards."
             )
         }
     }

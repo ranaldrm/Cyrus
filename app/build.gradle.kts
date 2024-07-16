@@ -67,7 +67,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.compose)
-    implementation(libs.androidx.ui.desktop)
+//    implementation(libs.androidx.ui.desktop)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -76,7 +76,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     //for viewmodel- from course
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.3")
     //for Room -from course
 //    implementation("androidx.room:room-ktx:${rootProject.extra["room_version"]}")
 //    implementation("androidx.room:room-runtime:${rootProject.extra["room_version"]}")
@@ -94,21 +94,21 @@ dependencies {
 
     // optional - Kotlin Extensions and Coroutines support for Room
     implementation("androidx.room:room-ktx:$room_version")
-
-    // optional - RxJava2 support for Room
-    implementation("androidx.room:room-rxjava2:$room_version")
-
-    // optional - RxJava3 support for Room
-    implementation("androidx.room:room-rxjava3:$room_version")
-
-    // optional - Guava support for Room, including Optional and ListenableFuture
-    implementation("androidx.room:room-guava:$room_version")
-
-    // optional - Test helpers
-    testImplementation("androidx.room:room-testing:$room_version")
-
-    // optional - Paging 3 Integration
-    implementation("androidx.room:room-paging:$room_version")
+//
+//    // optional - RxJava2 support for Room
+//    implementation("androidx.room:room-rxjava2:$room_version")
+//
+//    // optional - RxJava3 support for Room
+//    implementation("androidx.room:room-rxjava3:$room_version")
+//
+//    // optional - Guava support for Room, including Optional and ListenableFuture
+//    implementation("androidx.room:room-guava:$room_version")
+//
+//    // optional - Test helpers
+//    testImplementation("androidx.room:room-testing:$room_version")
+//
+//    // optional - Paging 3 Integration
+//    implementation("androidx.room:room-paging:$room_version")
 
 
 }

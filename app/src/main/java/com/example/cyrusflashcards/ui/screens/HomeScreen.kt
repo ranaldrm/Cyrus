@@ -33,7 +33,7 @@ fun HomeScreen (navController: NavController) {
         Button(
             onClick ={ navController.navigate("home")}
         ) {
-            Text("Comes back here")
+            Text("Does nothing")
         }
     }
 }

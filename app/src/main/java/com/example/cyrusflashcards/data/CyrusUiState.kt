@@ -3,8 +3,14 @@ data class CyrusUiState(
 
     val currentCardId: Int? = null,
     val currentDeckId: Int? = null,
-    val currentCard: CyrusCard? = null,
-    val currentDeck: CyrusDeck? = null
+
+
+
+
+
+
+//    val currentCard: CyrusCard? = null,
+//    val currentDeck: CyrusDeck? = null
 
 
 

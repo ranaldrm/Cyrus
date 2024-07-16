@@ -1,49 +1,56 @@
 package com.example.cyrusflashcards
 
-import androidx.compose.ui.window.application
+//import androidx.compose.ui.window.application
+import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import androidx.room.Room
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.cyrusflashcards.data.CyrusCard
-import com.example.cyrusflashcards.data.CyrusCardDao
 import com.example.cyrusflashcards.data.CyrusDatabase
 import com.example.cyrusflashcards.data.CyrusDeck
 import com.example.cyrusflashcards.data.CyrusUiState
-import com.example.cyrusflashcards.data.DataSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 
-class CyrusViewModel: ViewModel() {
-    //this collects from the UIState and exposes an immutable version to the other
-    //classes (I think?)
+//on advice from chatGPT extending AndroidViewModel rather than ViewModel
+//taking application as parameter
+class CyrusViewModel(application: Application): AndroidViewModel(application) {
+
     private val _uiState = MutableStateFlow(CyrusUiState())
-    private val application: CyrusApplication = CyrusApplication()
+    val uiState: StateFlow<CyrusUiState> = _uiState
+
+    //    private val application: CyrusApplication = CyrusApplication()
     private val cyrusDeckDao = CyrusDatabase.getDatabase(application).cyrusDeckDao()
     private val cyrusCardDao = CyrusDatabase.getDatabase(application).cyrusCardDao()
-    val currentCard: CyrusCard? = _uiState.value.currentCard
-    val currentDeck: CyrusDeck? = _uiState.value.currentDeck
+
+    //    val currentCard: CyrusCard? = _uiState.value.currentCard
+//    val currentDeck: CyrusDeck? = _uiState.value.currentDeck
+    var currentCardID: Int? = _uiState.value.currentCardId
+    var currentDeckID: Int? = _uiState.value.currentDeckId
 
 
-    fun deleteCard(card: CyrusCard) {
+    fun deleteCard(id: Int) {
         //Concurrency: ViewModelScope is used so that any coroutines within will be automatically canceleld
         //if the ViewModel is cleared.
         viewModelScope.launch {
-            cyrusCardDao.deleteCard(card)
+            val card = cyrusCardDao.getCardById(id)
+            if (card != null) {
+                cyrusCardDao.deleteCard(card)
+            }
         }
     }
 
-    fun createCard(card: CyrusCard) {
+    fun createCard(deckId: Int?, name: String, url: String) {
         //Concurrency: ViewModelScope is used so that any coroutines within will be automatically canceleld
         //if the ViewModel is cleared.
+        val card = deckId?.let { CyrusCard(deckId = it, name = name, imageURL = url) }
         viewModelScope.launch {
-            cyrusCardDao.addCard(card)
+            if (card != null) {
+                cyrusCardDao.addCard(card)
+            }
         }
     }
 
@@ -51,8 +58,23 @@ class CyrusViewModel: ViewModel() {
         //Concurrency: ViewModelScope is used so that any coroutines within will be automatically canceleld
         //if the ViewModel is cleared.
         viewModelScope.launch {
+
             cyrusDeckDao.deleteDeck(deck)
         }
+
+    }
+
+    fun deleteDeckByID(id: Int) {
+        viewModelScope.launch {
+            val deck = cyrusDeckDao.getDeckById(id)
+            if (deck != null) {
+                cyrusDeckDao.deleteDeck(deck)
+            }
+        }
+    }
+
+    fun deleteCurrentDeck (){
+        currentDeckID?.let { deleteDeckByID(it) }
     }
 
     fun createDeck(name: String) {
@@ -65,17 +87,44 @@ class CyrusViewModel: ViewModel() {
 
     }
 
+    //   gets the ID of the current deck from the uiState and then uses it get the actual deck from the database
+
+    fun getCurrentDeck(): Flow<CyrusDeck> = flow {
+        val deck = currentDeckID?.let { cyrusDeckDao.getDeckById(it) }
+        if (deck != null) {
+            emit(deck)
+        }
+    }
+
+    fun getCurrentCard():Flow<CyrusCard> = flow {
+        val card = currentCardID?.let { cyrusCardDao.getCardById(it) }
+        if (card != null) {
+            emit(card)
+        }
+    }
+
+
+
+
+
+
+//
+//
+//    }
+    fun selectDeckbyID(id: Int) {
+        _uiState.value = _uiState.value.copy(currentDeckId = id)
+    }
 
     fun selectCard(card: CyrusCard) {
-        _uiState.value = _uiState.value.copy(currentCard = card)
         _uiState.value = _uiState.value.copy(currentCardId = card.cardId)
     }
 
 
     //need to review 'value' and 'copy'
     fun selectDeck(deck: CyrusDeck) {
-        _uiState.value = _uiState.value.copy(currentDeck = deck)
+//        _uiState.value = _uiState.value.copy(currentDeck = deck)
         _uiState.value = _uiState.value.copy(currentDeckId = deck.deckId)
+
     }
 
     fun getCardsForDeck(deckID: Int): Flow<List<CyrusCard>> = flow {
@@ -86,6 +135,20 @@ class CyrusViewModel: ViewModel() {
     fun getAllDecks(): Flow<List<CyrusDeck>> = flow {
         val decks = cyrusDeckDao.getAllDecks()
         emit(decks)
+    }
+
+    fun getDeckById(id: Int): Flow<CyrusDeck> = flow {
+        val deck = cyrusDeckDao.getDeckById(id)
+        if (deck != null) {
+            emit(deck)
+        }
+    }
+
+    fun getCardById(id: Int): Flow<CyrusCard> = flow {
+        val card = cyrusCardDao.getCardById(id)
+        if (card != null) {
+            emit(card)
+        }
     }
 
 

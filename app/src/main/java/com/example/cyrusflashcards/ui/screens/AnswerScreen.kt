@@ -42,16 +42,16 @@ fun AnswerScreen(
             modifier = Modifier.size(100.dp)
         )
         //wrapping for nullable - can I get rid of this?
-        viewModel.currentCard?.let {
-            Text(
-                text = it.imageURL
-            )
-        }
-        viewModel.currentCard?.let {
-            Text(
-                text = it.name
-            )
-        }
+//        viewModel.currentCard?.let {
+//            Text(
+//                text = it.imageURL
+//            )
+//        }
+//        viewModel.currentCard?.let {
+//            Text(
+//                text = it.name
+//            )
+//        }
 //        Button(
 //            onClick = {
 //                val lastCard = viewModel.advanceCard()
