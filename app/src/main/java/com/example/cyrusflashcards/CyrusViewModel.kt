@@ -4,11 +4,9 @@ package com.example.cyrusflashcards
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.cyrusflashcards.data.CyrusCard
 import com.example.cyrusflashcards.data.CyrusDatabase
 import com.example.cyrusflashcards.data.CyrusDeck
-import com.example.cyrusflashcards.data.CyrusUiState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

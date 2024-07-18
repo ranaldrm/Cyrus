@@ -1,4 +1,4 @@
-package com.example.cyrusflashcards.data
+package com.example.cyrusflashcards
 data class CyrusUiState(
 
     val currentCardId: Int? = null,
