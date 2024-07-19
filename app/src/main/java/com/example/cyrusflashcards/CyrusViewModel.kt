@@ -31,6 +31,12 @@ class CyrusViewModel(application: Application): AndroidViewModel(application) {
     var currentCardID: Int? = _uiState.value.currentCardId
     var currentDeckID: Int? = _uiState.value.currentDeckId
 
+    //19/07/2024
+    fun getCardCountForDeck(deckId: Int): Flow<Int> = flow {
+        val count = cyrusDeckDao.getCardCountForDeck(deckId)
+        emit(count)
+    }
+
 
     fun deleteCard(id: Int) {
         //Concurrency: ViewModelScope is used so that any coroutines within will be automatically canceleld

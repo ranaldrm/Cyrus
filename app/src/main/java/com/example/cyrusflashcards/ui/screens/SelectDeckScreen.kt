@@ -69,14 +69,15 @@ fun SelectDeckScreen(
 fun ScrollDecks(decks: List<CyrusDeck>, viewModel: CyrusViewModel, navController: NavController) {
     LazyColumn {
         items(decks) { deck ->
-            DeckView(deck, viewModel, navController)
+            val cardCount by viewModel.getCardCountForDeck(deck.deckId).collectAsState(initial = 0)
+            DeckView(deck = deck, numberCards = cardCount, viewModel = viewModel, navController = navController)
         }
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DeckView(deck: CyrusDeck, viewModel: CyrusViewModel, navController: NavController) {
+fun DeckView(deck: CyrusDeck, numberCards: Int, viewModel: CyrusViewModel, navController: NavController) {
     Card(
         //need to feed back event
         onClick = {
@@ -99,7 +100,7 @@ fun DeckView(deck: CyrusDeck, viewModel: CyrusViewModel, navController: NavContr
                 )
             }
             Text (
-                text = "Deck contains... cards."
+                text = "Deck contains $numberCards cards."
             )
         }
     }
