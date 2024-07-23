@@ -1,5 +1,6 @@
 package com.example.cyrusflashcards.ui.screens
 
+import android.app.Application
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,10 +11,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.cyrusflashcards.CyrusViewModel
+import com.example.cyrusflashcards.CyrusViewModelFactory
 
 @Composable
-fun HomeScreen (navController: NavController) {
+fun HomeScreen (
+    navController: NavController,
+    application: Application
+) {
+    val viewModel: CyrusViewModel = viewModel(factory = CyrusViewModelFactory(application))
     Column (
         modifier = Modifier
             .fillMaxSize(),
@@ -31,9 +39,9 @@ fun HomeScreen (navController: NavController) {
             Text("Select a Deck")
         }
         Button(
-            onClick ={ navController.navigate("home")}
+            onClick ={ viewModel.tryTest()   }
         ) {
-            Text("Does nothing")
+            Text("Test button")
         }
     }
 }

@@ -20,4 +20,7 @@ interface CyrusDeckDao {
 
     @Query("SELECT * FROM cyrus_deck WHERE DeckId = :id")
     suspend fun getDeckById(id: Int): CyrusDeck?
+
+    @Query("SELECT COUNT(*) FROM cyrus_card WHERE deckId = :deckId")
+    suspend fun getCardCountForDeck(deckId: Int): Int
 }

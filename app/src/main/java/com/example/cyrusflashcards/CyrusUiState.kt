@@ -3,6 +3,7 @@ data class CyrusUiState(
 
     val currentCardId: Int? = null,
     val currentDeckId: Int? = null,
+    val test: Boolean = false
 
 
 

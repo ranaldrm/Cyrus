@@ -1,5 +1,6 @@
 package com.example.cyrusflashcards.ui.screens
 
+import android.app.Application
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
@@ -22,17 +23,24 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.cyrusflashcards.CyrusViewModel
+import com.example.cyrusflashcards.CyrusViewModelFactory
 import com.example.cyrusflashcards.data.CyrusDeck
 
 @Composable
 fun SelectDeckScreen(
     navController: NavController,
-    viewModel: CyrusViewModel
+    application: Application
+
 
 ) {
+    val viewModel: CyrusViewModel = viewModel(factory = CyrusViewModelFactory(application))
+
     val decks by viewModel.getAllDecks().collectAsState(initial = emptyList())
+    val uiState by viewModel.uiState.collectAsState()
+    val isTestWorking = uiState.test
 
 
 
@@ -46,6 +54,7 @@ fun SelectDeckScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+        Text(isTestWorking.toString())
         Spacer(modifier = Modifier.height(16.dp))
         Button(
             onClick ={ navController.navigate("create_deck")}
@@ -63,6 +72,7 @@ fun SelectDeckScreen(
 fun ScrollDecks(decks: List<CyrusDeck>, viewModel: CyrusViewModel, navController: NavController) {
     LazyColumn {
         items(decks) { deck ->
+
             DeckView(deck, viewModel, navController)
         }
     }
@@ -70,12 +80,22 @@ fun ScrollDecks(decks: List<CyrusDeck>, viewModel: CyrusViewModel, navController
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DeckView(deck: CyrusDeck, viewModel: CyrusViewModel, navController: NavController) {
+fun DeckView(
+    deck: CyrusDeck,
+    viewModel: CyrusViewModel,
+    navController: NavController,
+    deckId: Int = deck.deckId
+
+) {
+    val cardCount by viewModel.getCardCountForDeck(deck.deckId).collectAsState(initial = 0)
+
+
     Card(
         //need to feed back event
         onClick = {
             Log.d("DeckScreen", "Deck clicked")
-            viewModel.selectDeck(deck)
+            Log.d("DeckScreen","Current deck id in list is $deckId ")
+            viewModel.selectCurrentDeckByID(deckId)
             Log.d("DeckScreen", "currentDeck is null: ${viewModel.currentDeckID == null}")
 
             navController.navigate("deck")
@@ -93,7 +113,7 @@ fun DeckView(deck: CyrusDeck, viewModel: CyrusViewModel, navController: NavContr
                 )
             }
             Text (
-                text = "Deck contains... cards."
+                text = "Deck contains $cardCount cards."
             )
         }
     }
