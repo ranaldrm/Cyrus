@@ -47,10 +47,10 @@ fun AppNavigation (){
             PromptScreen(navController, viewModel)
         }
         composable("deck_select"){
-            SelectDeckScreen(navController, application)
+            SelectDeckScreen(navController, viewModel)
         }
         composable("deck") {
-            DeckScreen(navController, application)
+            DeckScreen(navController, viewModel)
         }
         composable("create_deck") {
             CreateDeckScreen(navController, viewModel)

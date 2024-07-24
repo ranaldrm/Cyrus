@@ -32,11 +32,11 @@ import com.example.cyrusflashcards.data.CyrusDeck
 @Composable
 fun SelectDeckScreen(
     navController: NavController,
-    application: Application
+    viewModel: CyrusViewModel
 
 
 ) {
-    val viewModel: CyrusViewModel = viewModel(factory = CyrusViewModelFactory(application))
+//    val viewModel: CyrusViewModel = viewModel(factory = CyrusViewModelFactory(application))
 
     val decks by viewModel.getAllDecks().collectAsState(initial = emptyList())
     val uiState by viewModel.uiState.collectAsState()

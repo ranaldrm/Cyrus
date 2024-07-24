@@ -32,9 +32,9 @@ import kotlinx.coroutines.launch
 @Composable
 fun DeckScreen(
     navController: NavController,
-    application: Application,
+    viewModel: CyrusViewModel,
 ) {
-    val viewModel: CyrusViewModel = viewModel(factory = CyrusViewModelFactory(application))
+//    val viewModel: CyrusViewModel = viewModel(factory = CyrusViewModelFactory(application))
     val uiState by viewModel.uiState.collectAsState()
     val currentDeckId: String? = uiState.currentDeckId?.toString()
 
