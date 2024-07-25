@@ -29,6 +29,8 @@ import com.example.cyrusflashcards.data.CyrusDeck
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
+//^^^^^^^^^^^^^^^^^^Uses 2 ViewModel methods: getDeckById,  deleteCurrentDeck^^^^^^^^^^^^^^^^^^^^
+
 @Composable
 fun DeckScreen(
     navController: NavController,

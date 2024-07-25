@@ -18,6 +18,8 @@ interface CyrusDeckDao {
     suspend fun deleteDeck(deck: CyrusDeck)
 
 
+
+
     @Query("SELECT * FROM cyrus_deck WHERE DeckId = :id")
     suspend fun getDeckById(id: Int): CyrusDeck?
 

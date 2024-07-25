@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.cyrusflashcards.data.CyrusCard
 import com.example.cyrusflashcards.data.CyrusDatabase
 import com.example.cyrusflashcards.data.CyrusDeck
+import com.example.cyrusflashcards.data.CyrusDeckDao
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -29,16 +30,59 @@ class CyrusViewModel(application: Application): AndroidViewModel(application) {
 
 
 
+//^^^^^^^^^^^^^^^^^^^^^^SELECTDECKSCREEN^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
     fun getCardCountForDeck(deckId: Int): Flow<Int> = flow {
         emit(cyrusDeckDao.getCardCountForDeck(deckId))
     }
 
+//also used by DeckScreen
     fun selectCurrentDeckByID(id: Int) {
         Log.d("ViewModel", "Method called in ViewModel passing $id")
-        _uiState.value = _uiState.value.copy(currentDeckId = id)
-        Log.d("ViewModel", "Current deck id in ViewModel is ${_uiState.value.currentDeckId}")
+          //ViewModelScope starts a new coroutine in the ViewModel's scope so that the suspend function can be called from
+        // cyrusDeckDao
+        viewModelScope.launch {
+            //get a list of cards in the deck from the database
+            val cards: List<CyrusCard> = cyrusCardDao.getCardsForDeck(deckId = id)
+
+            //the current card is the first card in the list
+            val card: CyrusCard = cards[_uiState.value.cardIndex]
+
+            // Update the UI state with the current deck ID, the list of cards and the current cardID
+            _uiState.value = _uiState.value.copy(
+                currentDeckId = id,
+                cards = cards,
+                currentCardId = card.cardId
+            )
+
+            Log.d("ViewModel", "Current deck id in ViewModel is ${_uiState.value.currentDeckId}")
+
+        }
     }
 
+  //get all decks so these can be scrolled through in a list and a deck selected
+    fun getAllDecks(): Flow<List<CyrusDeck>> = flow {
+        emit(cyrusDeckDao.getAllDecks())
+    }
+//^^^^^^^^^^^^^^^^^^^^^^DECKSCREEN^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+//also uses selectCurrentDeckByID see SELECTDECKSCREEN
+
+
+    //Deletes deck and deletes all cards in deck
+    fun deleteDeckByID(id: Int) {
+        viewModelScope.launch {
+            cyrusDeckDao.getDeckById(id)?.let { cyrusDeckDao.deleteDeck(it); cyrusCardDao.deleteCardsByDeckId(id) }
+        }
+    }
+
+
+    //^^^^^^^^^^^^^^^^^^^^^^PROMPTSCREEN^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+      //also used by answerScreen
     fun getCurrentCard(): Flow<CyrusCard> = flow {
         Log.d("ViewModel", "getCurrentCard called in ViewModel")
         currentCardID?.let { cardId ->
@@ -49,10 +93,68 @@ class CyrusViewModel(application: Application): AndroidViewModel(application) {
         }
     }
 
+    //^^^^^^^^^^^^^^^^^^^^^^^ANSWERSCREEN^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+//Also uses getCurrentCard (See PromptScreen)
+
+    fun advanceCard() {
+        if (_uiState.value.cardIndex < _uiState.value.cards.size - 1) {
+            val nextIndex = _uiState.value.cardIndex + 1
+            val nextCard = _uiState.value.cards[nextIndex]
+            _uiState.value = _uiState.value.copy(cardIndex = nextIndex)
+            _uiState.value = _uiState.value.copy(currentCardId = nextCard.cardId)
+        } else {
+            _uiState.value = _uiState.value.copy(deckFinished = true)
+        }
+    }
+
+     fun getDeckFinished(): Boolean {
+         return _uiState.value.deckFinished
+     }
+
+
+    fun deleteCurrentCard() {
+        _uiState.value.currentCardId?.let { cardId ->
+            viewModelScope.launch {
+                val card = cyrusCardDao.getCardById(cardId)
+                card?.let {
+                    cyrusCardDao.deleteCard(it)
+                    val updatedCards = _uiState.value.cards.filter { it.cardId != cardId }
+
+                    if (updatedCards.isNotEmpty()) {
+                        val nextIndex = if (_uiState.value.cardIndex >= updatedCards.size) 0 else _uiState.value.cardIndex
+                        val nextCard = updatedCards[nextIndex]
+
+                        _uiState.value = _uiState.value.copy(
+                            cards = updatedCards,
+                            cardIndex = nextIndex,
+                            currentCardId = nextCard.cardId,
+                            currentCard = nextCard,
+                            deckFinished = false // Reset deckFinished if there are still cards left
+                        )
+                    } else {
+                        _uiState.value = _uiState.value.copy(
+                            cards = updatedCards,
+                            cardIndex = 0,
+                            currentCardId = null,
+                            currentCard = null,
+                            deckFinished = true // Set deckFinished if no cards are left
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+
+
+
     fun deleteCard(id: Int) {
         viewModelScope.launch {
             cyrusCardDao.getCardById(id)?.let { cyrusCardDao.deleteCard(it) }
         }
+
     }
 
     fun createCard(deckId: Int?, name: String, url: String) {
@@ -70,11 +172,7 @@ class CyrusViewModel(application: Application): AndroidViewModel(application) {
         }
     }
 
-    fun deleteDeckByID(id: Int) {
-        viewModelScope.launch {
-            cyrusDeckDao.getDeckById(id)?.let { cyrusDeckDao.deleteDeck(it) }
-        }
-    }
+
 
     fun deleteCurrentDeck() {
         currentDeckID?.let { deleteDeckByID(it) }
@@ -105,9 +203,7 @@ class CyrusViewModel(application: Application): AndroidViewModel(application) {
         emit(cyrusCardDao.getCardsForDeck(deckID))
     }
 
-    fun getAllDecks(): Flow<List<CyrusDeck>> = flow {
-        emit(cyrusDeckDao.getAllDecks())
-    }
+
 
     fun getDeckById(id: Int): Flow<CyrusDeck> = flow {
         cyrusDeckDao.getDeckById(id)?.let { emit(it) }

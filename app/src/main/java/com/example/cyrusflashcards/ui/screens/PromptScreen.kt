@@ -21,14 +21,16 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.cyrusflashcards.CyrusViewModel
 
+//^^^^^^^^^^^^^^^^^^Uses 1 ViewModel methods: getCurrentCard^^^^^^^^^^^^^^^^^^^^
 @Composable
 fun PromptScreen (
     navController: NavController,
     viewModel: CyrusViewModel
 
 ) {
-    val currentDeck by viewModel.getCurrentDeck().collectAsState(initial = null)
+//    val currentDeck by viewModel.getCurrentDeck().collectAsState(initial = null)
     val currentCard by viewModel.getCurrentCard().collectAsState(initial = null)
+
 
     Column (
         modifier = Modifier
@@ -47,8 +49,13 @@ fun PromptScreen (
             contentDescription = "person",
             modifier = Modifier.size(100.dp)
         )
+        Spacer (modifier = Modifier.height(16.dp))
+        //show imgURL or "no card Selected if something went wrong and there is no card
+        Text(currentCard?.imageURL ?: "No Card Selected")
+
+
         //wrapping for nullable - can I get rid of this?
-        currentCard?.let { Text(it.imageURL) }
+//        currentCard?.let { Text(it.imageURL) }
 
         Button(
             onClick ={ navController.navigate("answer")}

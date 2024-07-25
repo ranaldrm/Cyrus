@@ -29,6 +29,10 @@ import com.example.cyrusflashcards.CyrusViewModel
 import com.example.cyrusflashcards.CyrusViewModelFactory
 import com.example.cyrusflashcards.data.CyrusDeck
 
+
+
+//^^^^^^^^^^^^^Uses 3  ViewModel methods: selectCurrentDeckByID, getCardCountForDeck, getallDecks^^^^^^^^^^^^^^^^
+
 @Composable
 fun SelectDeckScreen(
     navController: NavController,

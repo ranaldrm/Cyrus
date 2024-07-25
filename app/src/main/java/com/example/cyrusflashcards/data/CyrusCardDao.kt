@@ -11,6 +11,7 @@ interface CyrusCardDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addCard(card: CyrusCard): Long
 
+    //maybe delete as redundant
     @Query("SELECT * FROM cyrus_card WHERE cardId = :id")
     suspend fun getCardById(id: Int): CyrusCard?
 
@@ -19,6 +20,12 @@ interface CyrusCardDao {
 
     @Delete
     suspend fun deleteCard(card: CyrusCard)
+
+    //used when a deck is deleted to delete all associated cards
+    @Query("DELETE FROM cyrus_card WHERE deckId = :deckId")
+    suspend fun deleteCardsByDeckId(deckId: Int)
+
+
 
 
 }

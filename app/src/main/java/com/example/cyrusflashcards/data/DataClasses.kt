@@ -21,13 +21,3 @@ data class CyrusDeck (
     val deckId: Int = 0,
     val name: String,
 )
-//) {
-//    val deckSize: Int
-//        get() = cards.size
-//
-//    fun addCard(card: CyrusCard) {
-//        cards.add(card)
-//    }
-//
-
-//}
