@@ -41,28 +41,6 @@ fun AnswerScreen(
             contentDescription = "person",
             modifier = Modifier.size(100.dp)
         )
-        //wrapping for nullable - can I get rid of this?
-//        viewModel.currentCard?.let {
-//            Text(
-//                text = it.imageURL
-//            )
-//        }
-//        viewModel.currentCard?.let {
-//            Text(
-//                text = it.name
-//            )
-//        }
-//        Button(
-//            onClick = {
-//                val lastCard = viewModel.advanceCard()
-//                if (!lastCard) {
-//                    navController.navigate("prompt")
-//                } else {
-//                    navController.navigate("finished")
-//                }
-//            }
-//        ) {
-//            Text("Next Card")
-//        }
+
     }
 }

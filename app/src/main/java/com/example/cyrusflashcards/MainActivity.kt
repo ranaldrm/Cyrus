@@ -19,25 +19,13 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             CyrusFlashCardsTheme {
-                AppNavigation()
+
+                //Scaffold and padding is to help arrange navigation bars etc
+                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                    AppNavigation()
+                }
             }
         }
     }
 }
 
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    CyrusFlashCardsTheme {
-        Greeting("Android")
-    }
-}

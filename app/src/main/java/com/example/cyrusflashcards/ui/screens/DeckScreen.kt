@@ -34,7 +34,7 @@ fun DeckScreen(
     navController: NavController,
     viewModel: CyrusViewModel,
 ) {
-//    val viewModel: CyrusViewModel = viewModel(factory = CyrusViewModelFactory(application))
+
     val uiState by viewModel.uiState.collectAsState()
     val currentDeckId: String? = uiState.currentDeckId?.toString()
 
@@ -91,66 +91,3 @@ fun DeckScreen(
         Spacer(modifier = Modifier.height(16.dp))
     }
 }
-
-//
-//@Composable
-//fun DeckScreen(
-//    navController: NavController,
-//    application: Application,
-//
-//
-//) {
-//
-////    val deck: CyrusDeck = uiState.currentDeck
-////    val deck: CyrusDeck? = viewModel.currentDeck
-////
-////    val observedDeck: CyrusDeck = viewModel.currentDeck
-//    val viewModel: CyrusViewModel = viewModel(factory = CyrusViewModelFactory(application))
-//    val uiState by viewModel.uiState.collectAsState()
-//    val currentDeckId: String? = uiState.currentDeckId?.toString()
-////    val currentDeck by viewModel.getCurrentDeck().collectAsState(initial = null)
-//
-//
-//    Column (
-//        modifier = Modifier
-//            .fillMaxSize(),
-//        horizontalAlignment = Alignment.CenterHorizontally,
-//        verticalArrangement = Arrangement.Center
-//    ) {
-//        Spacer (modifier = Modifier.height(16.dp))
-////        //have to use the extra stuff cos name is currenlt nullable
-////        if (currentDeck != null) {
-////            //Asserting not null- probably a better way to handle this
-////            Text(currentDeck!!.name)
-////        }
-//        if (currentDeckId != null) {
-//            Text(currentDeckId)
-//        }
-//        Spacer (modifier = Modifier.height(16.dp))
-//        Button(
-//            onClick ={ navController.navigate("prompt")}
-//        ) {
-//            Text("Review Cards")
-//        }
-//        Button(
-//            onClick ={ navController.navigate("create_card")}
-//        ) {
-//            Text("Add a Card")
-//        }
-//
-//        Button(
-//            onClick = {
-//                Log.d("DeckScreen", "Delete button clicked")
-//                viewModel.deleteCurrentDeck()
-//
-//            }
-//        ) {
-//            Text("Delete Deck")
-//        }
-//
-//
-//        Spacer (modifier = Modifier.height(16.dp))
-//
-//    }
-//
-//}

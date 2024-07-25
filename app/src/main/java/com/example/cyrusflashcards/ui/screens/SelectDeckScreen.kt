@@ -40,7 +40,7 @@ fun SelectDeckScreen(
 
     val decks by viewModel.getAllDecks().collectAsState(initial = emptyList())
     val uiState by viewModel.uiState.collectAsState()
-    val isTestWorking = uiState.test
+
 
 
 
@@ -54,7 +54,9 @@ fun SelectDeckScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text(isTestWorking.toString())
+    //can be deleted- test to see if state is being remembered. button pressed on home screen
+
+
         Spacer(modifier = Modifier.height(16.dp))
         Button(
             onClick ={ navController.navigate("create_deck")}

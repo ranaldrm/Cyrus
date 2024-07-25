@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
+//Standard boiler plate code for viewmodel factory, taking application as a parameter
 class CyrusViewModelFactory(
     private val application: Application
 ) : ViewModelProvider.AndroidViewModelFactory(application) {

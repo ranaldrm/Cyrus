@@ -27,10 +27,9 @@ fun AppNavigation (){
 
     // Use the ViewModelFactory to obtain an instance of the ViewModel
     val viewModel: CyrusViewModel = viewModel(factory = CyrusViewModelFactory(application))
-    val uiState by viewModel.uiState.collectAsState()
 
-    //do I need the uiState below?
-//    val uiState by viewModel.uiState.collectAsState()
+
+
 
     //create a navController to move round app
     val navController = rememberNavController()
@@ -38,7 +37,7 @@ fun AppNavigation (){
     //pass the route for the HomeScreen as the parameter for startDestination
     NavHost(navController = navController, startDestination = "home"){
         composable("home"){
-            HomeScreen(navController, application)
+            HomeScreen(navController, viewModel)
         }
         composable("create_card"){
             CreateCardScreen(navController, viewModel)

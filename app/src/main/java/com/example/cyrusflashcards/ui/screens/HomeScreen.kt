@@ -19,9 +19,9 @@ import com.example.cyrusflashcards.CyrusViewModelFactory
 @Composable
 fun HomeScreen (
     navController: NavController,
-    application: Application
+    viewModel: CyrusViewModel
 ) {
-    val viewModel: CyrusViewModel = viewModel(factory = CyrusViewModelFactory(application))
+
     Column (
         modifier = Modifier
             .fillMaxSize(),
@@ -38,10 +38,6 @@ fun HomeScreen (
         ) {
             Text("Select a Deck")
         }
-        Button(
-            onClick ={ viewModel.tryTest()   }
-        ) {
-            Text("Test button")
-        }
+
     }
 }

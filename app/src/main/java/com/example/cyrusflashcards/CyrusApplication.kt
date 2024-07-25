@@ -4,6 +4,9 @@ import android.app.Application
 import android.util.Log
 import com.example.cyrusflashcards.data.CyrusDatabase
 
+//boilerplate- this is basically used to connect the database to the viewmodel. The application initialises the database
+//and then is based as a parameter to the ViewModel when creating it in the ViewModelFactory
+
 class CyrusApplication: Application () {
     val database: CyrusDatabase by lazy {
         Log.d("CyrusApplication", "Initializing database with application context: ${this != null}")

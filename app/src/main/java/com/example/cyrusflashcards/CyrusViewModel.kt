@@ -24,9 +24,8 @@ class CyrusViewModel(application: Application): AndroidViewModel(application) {
     val currentCardID: Int?
         get() = _uiState.value.currentCardId
 
-    fun tryTest() {
-        _uiState.value = _uiState.value.copy(test = true)
-    }
+
+
 
 
 
