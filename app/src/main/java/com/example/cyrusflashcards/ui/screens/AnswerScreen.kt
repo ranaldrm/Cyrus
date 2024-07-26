@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.cyrusflashcards.CyrusViewModel
 
-//^^^^^^^^^^^^^^^^^^Uses 1 ViewModel methods: getCurrentCard^^^^^^^^^^^^^^^^^^^^
+//^^^^^^^^^^^^^^^^^^Uses 4 ViewModel methods: getCurrentCard, getDeckFinished, advanceCard, deleteCurrentCard^^^^^^^^^^^^^^^^^^^^
 @Composable
 fun AnswerScreen(
     navController: NavController,

@@ -49,8 +49,7 @@ fun SelectDeckScreen(
 
 
 
-    //maybe delete? do I need a uiState seperate from ViewModel?
-//    val uiState by viewModel.uiState.collectAsState()
+
     Column (
         modifier = Modifier
             .fillMaxSize()
@@ -99,8 +98,8 @@ fun DeckView(
     Card(
         //need to feed back event
         onClick = {
-            Log.d("DeckScreen", "Deck clicked")
-            Log.d("DeckScreen","Current deck id in list is $deckId ")
+            Log.d("SelectDeckScreen", "Deck clicked")
+            Log.d("SelectDeckScreen","Current deck id in list is $deckId ")
             viewModel.selectCurrentDeckByID(deckId)
             Log.d("DeckScreen", "currentDeck is null: ${viewModel.currentDeckID == null}")
 
