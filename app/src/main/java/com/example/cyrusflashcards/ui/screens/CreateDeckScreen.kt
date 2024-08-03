@@ -43,6 +43,7 @@ fun CreateDeckScreen (
             value = nameText,
             onValueChange = {nameText = it},
             label = { Text("Enter a name") }
+
         )
         Spacer (modifier = Modifier.height(16.dp))
         //Button to create the card

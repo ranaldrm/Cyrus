@@ -17,10 +17,13 @@ data class CyrusUiState(
     val cardIndex: Int = 0,
 
     //A list of cards which can be taken from a deck in the database, these can then be cycled through by
-    //index
+    //index -these can be either all cards in a deck, or a subset chosen for repetition
     val cards: List<CyrusCard> = emptyList(),
 
-    val deckFinished: Boolean = false
+    val deckFinished: Boolean = false,
+
+    //toggled from settings, determines with cards are repeated according to algorithm
+    val usingSM2: Boolean = true
 
 )
 

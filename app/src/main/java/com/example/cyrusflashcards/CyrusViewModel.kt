@@ -1,7 +1,9 @@
 package com.example.cyrusflashcards
 
 import android.app.Application
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cyrusflashcards.data.CyrusCard
@@ -10,6 +12,7 @@ import com.example.cyrusflashcards.data.CyrusDeck
 import com.example.cyrusflashcards.data.CyrusDeckDao
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 
 class CyrusViewModel(application: Application): AndroidViewModel(application) {
 
@@ -62,21 +65,39 @@ class CyrusViewModel(application: Application): AndroidViewModel(application) {
 //    }
 
     fun selectCurrentDeckByID(id: Int) {
-        Log.d("ViewModel", "Method called in ViewModel passing $id")
+        Log.d("ViewModel", "Select Deck Method called in ViewModel passing $id")
         viewModelScope.launch {
-            // Get a list of cards in the deck from the database
-            val cards: List<CyrusCard> = cyrusCardDao.getCardsForDeck(deckId = id)
+            // Get a list of cards in the deck from the database, either all cards
+            //or just due cards depending on whether SM-2 algorithm is turned on
+
+            val cards: List<CyrusCard> = if (_uiState.value.usingSM2) {
+                Log.d("ViewModel", "getting SM-2 cards")
+                cyrusCardDao.getDueCardsForDeck(deckId = id)
+
+            } else {
+                Log.d("ViewModel", "getting all cards")
+                cyrusCardDao.getCardsForDeck(deckId = id)
+            }
+
 
             if (cards.isNotEmpty()) {
+//make sure cardIndex is within bounds
+
+                val cardIndex = 0
+//                val cardIndex = _uiState.value.cardIndex.coerceIn(0 until cards.size)
+//                Log.d("ViewModel", "Card index is $cardIndex")
                 // The current card is the first card in the list
-                val card: CyrusCard = cards[_uiState.value.cardIndex]
+                val card: CyrusCard = cards[cardIndex]
 
                 // Update the UI state with the current deck ID, the list of cards, and the current card ID
                 _uiState.value = _uiState.value.copy(
                     currentDeckId = id,
                     cards = cards,
-                    currentCardId = card.cardId
+                    currentCardId = card.cardId,
+                    cardIndex = cardIndex,
+                    deckFinished = false
                 )
+                Log.d("ViewModel", "card index is ${_uiState.value.cardIndex}")
 
                 Log.d("ViewModel", "Current deck id in ViewModel is ${_uiState.value.currentDeckId}")
             } else {
@@ -113,6 +134,7 @@ class CyrusViewModel(application: Application): AndroidViewModel(application) {
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
       //also used by answerScreen
+    //also going to use in updateCard method here in ViewModel
     fun getCurrentCard(): Flow<CyrusCard> = flow {
         Log.d("ViewModel", "getCurrentCard called in ViewModel")
         currentCardID?.let { cardId ->
@@ -129,19 +151,69 @@ class CyrusViewModel(application: Application): AndroidViewModel(application) {
 //Also uses getCurrentCard (See PromptScreen),
 
     fun advanceCard() {
-        if (_uiState.value.cardIndex < _uiState.value.cards.size - 1) {
+        if (checkCanAdvance()) {
             val nextIndex = _uiState.value.cardIndex + 1
             val nextCard = _uiState.value.cards[nextIndex]
             _uiState.value = _uiState.value.copy(cardIndex = nextIndex)
             _uiState.value = _uiState.value.copy(currentCardId = nextCard.cardId)
         } else {
-            _uiState.value = _uiState.value.copy(deckFinished = true)
+            _uiState.value = _uiState.value.copy(deckFinished = true, cardIndex = 0)
+
         }
     }
 
-     fun getDeckFinished(): Boolean {
-         return _uiState.value.deckFinished
-     }
+
+    fun checkCanAdvance(): Boolean {
+        return _uiState.value.cardIndex < _uiState.value.cards.size - 1
+    }
+    fun getDeckFinished(): Boolean {
+
+        return _uiState.value.deckFinished
+    }
+
+
+    //needs an API of >=26 to get current date
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun updateCardeFactorAndInterval (card: CyrusCard, qFactor: Int) {
+        val newEFactor = calculateNewEFactor(card.eFactor, qFactor)
+        val newInterval = calculateNewInterval(card.interval, card.reviewCount, newEFactor)
+        val updatedCard = card.copy(
+            eFactor = newEFactor,
+            interval = newInterval,
+            lastReviewed = LocalDate.now().toString(),
+            reviewCount = card.reviewCount + 1
+        )
+        viewModelScope.launch {
+            cyrusCardDao.updateCard(updatedCard)
+        }
+    }
+
+//used in updateCardeFactorAndInterval
+    private fun calculateNewInterval (interval: Int, reviewCount: Int, eFactor: Double): Int {
+        var newInterval = interval
+        if (reviewCount == 1 ) {
+            newInterval = 1
+        } else if (reviewCount == 2) {
+            newInterval = 6
+        } else if (reviewCount >= 3) {
+            newInterval = interval * eFactor.toInt()
+        }
+        return newInterval
+    }
+
+    //used in updateCardeFactorAndInterval
+    private fun calculateNewEFactor(eFactor: Double, qFactor: Int): Double {
+        var newEfactor = eFactor + (0.1 - (5 - qFactor) * (0.08 + (5 - qFactor) * 0.02))
+
+//minium Efactor of 1.3
+        if (newEfactor < 1.3) {
+            newEfactor = 1.3
+        }
+        return newEfactor
+    }
+
+
+
 
 
     fun deleteCurrentCard() {
@@ -177,8 +249,13 @@ class CyrusViewModel(application: Application): AndroidViewModel(application) {
         }
     }
 
+    //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^SETTINGSCREEN^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
+    fun toggleAlgorithm(on: Boolean) {
+        _uiState.value = _uiState.value.copy(usingSM2 = on)
+    }
 
     fun deleteCard(id: Int) {
         viewModelScope.launch {

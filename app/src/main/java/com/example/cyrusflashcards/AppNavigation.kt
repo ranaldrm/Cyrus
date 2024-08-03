@@ -1,6 +1,8 @@
 package com.example.cyrusflashcards
 
 import android.app.Application
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
@@ -23,10 +25,12 @@ import com.example.cyrusflashcards.ui.screens.PromptScreen
 
 import com.example.cyrusflashcards.ui.screens.SelectDeckScreen
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavController
 import com.example.cyrusflashcards.ui.screens.CreateAccountScreen
 import com.example.cyrusflashcards.ui.screens.LoginScreen
 import com.example.cyrusflashcards.ui.screens.SettingsScreen
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppNavigation() {
@@ -103,6 +107,14 @@ fun AppNavigation() {
         }
     )
 }
+
+//used in answer screen so that it can advance to the next card without revealing the next answer
+
+fun NavController.navigateAndAdvance(route: String, viewModel: CyrusViewModel) {
+    this.navigate(route)
+    viewModel.advanceCard()
+}
+
 
 
 

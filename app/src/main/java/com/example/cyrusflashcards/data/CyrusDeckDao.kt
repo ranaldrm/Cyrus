@@ -26,6 +26,8 @@ interface CyrusDeckDao {
     @Query("SELECT COUNT(*) FROM cyrus_card WHERE deckId = :deckId")
     suspend fun getCardCountForDeck(deckId: Int): Int
 
+
+
     @Query("DELETE FROM cyrus_deck")
     suspend fun deleteAllDecks()
 

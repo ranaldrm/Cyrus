@@ -89,7 +89,11 @@ fun DeckScreen(
         ) {
             Text("Delete Deck")
         }
-
         Spacer(modifier = Modifier.height(16.dp))
+        Button(
+            onClick = { navController.navigate("deck_screen") }
+        ) {
+            Text("Home")
+        }
     }
 }

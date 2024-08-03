@@ -12,7 +12,13 @@ data class CyrusCard (
     val cardId: Int = 0,
     val deckId: Int,     //foreign key for deck
     val name: String,
-    val imageURL: String = "no URL entered"
+    val imageURL: String = "no URL entered",
+    var eFactor: Double = 2.5, //how easy the card is- starts at 2.5
+    var interval: Int = 1,  //how often the card should be reviewed
+    var lastReviewed: String? = null, // currently using a String// whether to review on a particular day
+    //is handled by the DeckDao SQL quiry
+    var reviewCount: Int = 0 // number of times the card has been reviewed,
+    //this is used for the SM-2 algorithm and never goes above 3, so 3 means >=3
 )
 
 @Entity(tableName= "cyrus_deck")

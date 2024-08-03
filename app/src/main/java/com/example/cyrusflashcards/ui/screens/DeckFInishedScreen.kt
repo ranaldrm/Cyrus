@@ -1,8 +1,13 @@
 package com.example.cyrusflashcards.ui.screens
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import com.example.cyrusflashcards.CyrusViewModel
 
@@ -10,10 +15,33 @@ import com.example.cyrusflashcards.CyrusViewModel
 fun DeckFinishedScreen(
     navController: NavController,
     viewModel: CyrusViewModel
-){
-    Column {
-        Text (text = "Deck Finished")
+) {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(text = "Congratulations! Deck Finished")
+            Button(
+                onClick = { navController.navigate("deck_select") }
+
+            ) {
+                Text("Home")
+            }
+        }
     }
-
-
 }
+
+
+
+
+
+//{
+//    Column {
+//        Text (text = "Deck Finished")
+//    }
+//
+//
+//}
