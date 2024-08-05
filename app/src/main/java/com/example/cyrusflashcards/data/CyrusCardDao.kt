@@ -12,6 +12,10 @@ interface CyrusCardDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addCard(card: CyrusCard): Long
 
+    //for bulk upload
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun addCards(cards: List<CyrusCard>): List<Long>
+
 
     @Query("SELECT * FROM cyrus_card WHERE cardId = :id")
     suspend fun getCardById(id: Int): CyrusCard?

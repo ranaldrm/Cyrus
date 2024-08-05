@@ -10,8 +10,10 @@ import com.example.cyrusflashcards.data.CyrusCard
 import com.example.cyrusflashcards.data.CyrusDatabase
 import com.example.cyrusflashcards.data.CyrusDeck
 import com.example.cyrusflashcards.data.CyrusDeckDao
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.time.LocalDate
 
 class CyrusViewModel(application: Application): AndroidViewModel(application) {
@@ -126,6 +128,14 @@ class CyrusViewModel(application: Application): AndroidViewModel(application) {
     fun deleteDeckByID(id: Int) {
         viewModelScope.launch {
             cyrusDeckDao.getDeckById(id)?.let { cyrusDeckDao.deleteDeck(it); cyrusCardDao.deleteCardsByDeckId(id) }
+        }
+    }
+
+    fun bulkInsertCards(cards: List<CyrusCard>) {
+        viewModelScope.launch {
+
+                cyrusCardDao.addCards(cards)
+
         }
     }
 

@@ -29,6 +29,8 @@ import androidx.navigation.NavController
 import com.example.cyrusflashcards.CyrusViewModel
 import com.example.cyrusflashcards.R
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
 
 
 @Composable
@@ -48,7 +50,12 @@ fun LoginScreen (navController: NavController, viewModel: CyrusViewModel){
             contentDescription = "persian eagle"
         )
         Spacer (modifier = Modifier.height(16.dp))
-        Text("Cyrus FlashCards")
+        Text("Welcome",
+            fontSize = 40.sp,
+            fontWeight = FontWeight.Bold ,
+
+
+            )
         Spacer (modifier = Modifier.height(16.dp))
 
         TextField(

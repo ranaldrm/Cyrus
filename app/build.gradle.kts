@@ -16,7 +16,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.cyrusflashcards"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -109,6 +109,13 @@ dependencies {
 //
 //    // optional - Paging 3 Integration
 //    implementation("androidx.room:room-paging:$room_version")
+
+    //for reading Office docs
+    implementation ("org.apache.poi:poi:5.2.3")
+    implementation ("org.apache.poi:poi-ooxml:5.2.3")
+
+    //Coil for painting images
+    implementation("io.coil-kt:coil-compose:2.1.0")
 
 
 }

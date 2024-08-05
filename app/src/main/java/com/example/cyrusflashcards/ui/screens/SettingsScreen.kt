@@ -36,12 +36,17 @@ fun SettingsScreen(
             Button(
                 onClick = { viewModel.deleteAllDescks() }
             ) {
-                Text("Delete All Decks")
+                Text("Delete All")
             }
             Spacer(modifier = Modifier.height(16.dp))
             Text(text = "Use SM-2 algorithm for repetition")
 
             SwitchForAlg(viewModel)
+            Button(
+                onClick = { navController.navigate("deck_select") }
+            ) {
+                Text("Home")
+            }
         }
     }
 
