@@ -19,7 +19,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.cyrusflashcards.CyrusViewModel
 
@@ -41,7 +43,10 @@ fun CreateCardScreen (navController: NavController, viewModel: CyrusViewModel){
             modifier = Modifier.size(100.dp)
         )
         Spacer (modifier = Modifier.height(16.dp))
-        Text("Create a card")
+        Text("Create a student",
+            fontSize = 30.sp,
+            fontWeight = FontWeight.Bold
+        )
         Spacer (modifier = Modifier.height(16.dp))
 
         TextField(
@@ -66,7 +71,7 @@ fun CreateCardScreen (navController: NavController, viewModel: CyrusViewModel){
 
             }
         ) {
-            Text("Create Card")
+            Text("Create Student")
         }
 
     }

@@ -2,6 +2,7 @@ package com.example.cyrusflashcards.ui.screens
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -24,8 +25,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import coil.compose.rememberAsyncImagePainter
 import com.example.cyrusflashcards.CyrusViewModel
 import com.example.cyrusflashcards.navigateAndAdvance
 import kotlinx.coroutines.delay
@@ -63,12 +66,19 @@ fun AnswerScreen(
         verticalArrangement = Arrangement.Center
     ) {
 //show imgURL or "no card Selected if something went wrong and there is no card
-        Text(currentCard?.imageURL ?: "No Card Selected")
+//        Text(currentCard?.imageURL ?: "No Card Selected")
         Spacer(modifier = Modifier.height(16.dp))
-        Icon(
-            imageVector = Icons.Default.Person,
-            contentDescription = "person",
-            modifier = Modifier.size(100.dp)
+//        Icon(
+//            imageVector = Icons.Default.Person,
+//            contentDescription = "person",
+//            modifier = Modifier.size(100.dp)
+//        )
+        Image(
+            painter = rememberAsyncImagePainter(model = currentCard?.imageURL),
+            contentDescription = null,
+            modifier = Modifier
+                .height(200.dp),
+            contentScale = ContentScale.Crop
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(currentCard?.name ?: "No Card Selected")
@@ -98,7 +108,7 @@ fun AnswerScreen(
                 }
             }
         ) {
-            Text("Next Card")
+            Text("Next")
         }
         Spacer(modifier = Modifier.height(16.dp))
         Button (
@@ -113,7 +123,7 @@ fun AnswerScreen(
             }
 
         ) {
-            Text("Delete Card")
+            Text("Delete")
         }
     }
 

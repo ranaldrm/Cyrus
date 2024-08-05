@@ -15,7 +15,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.cyrusflashcards.CyrusViewModel
@@ -32,21 +34,29 @@ fun SettingsScreen(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = "Settings")
+            Text(text = "Settings",
+                fontSize = 30.sp,
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            Button(
+                onClick = { navController.navigate("deck_select") }
+            ) {
+                Text("Home")
+            }
+
             Button(
                 onClick = { viewModel.deleteAllDescks() }
             ) {
                 Text("Delete All")
             }
             Spacer(modifier = Modifier.height(16.dp))
-            Text(text = "Use SM-2 algorithm for repetition")
+            Text(text = "Use SM-2 algorithm")
 
             SwitchForAlg(viewModel)
-            Button(
-                onClick = { navController.navigate("deck_select") }
-            ) {
-                Text("Home")
-            }
+            Text(text = "Shuffle on review")
+            SwitchForShuffle(viewModel)
+
         }
     }
 
@@ -63,6 +73,19 @@ fun SwitchForAlg(viewModel: CyrusViewModel) {
         onCheckedChange = {
             checked = it
             viewModel.toggleAlgorithm(it)
+        }
+    )
+}
+
+@Composable
+fun SwitchForShuffle(viewModel: CyrusViewModel) {
+    var checked by remember { mutableStateOf(false) }
+
+    Switch(
+        checked = checked,
+        onCheckedChange = {
+            checked = it
+            viewModel.toggleShuffle(it)
         }
     )
 }

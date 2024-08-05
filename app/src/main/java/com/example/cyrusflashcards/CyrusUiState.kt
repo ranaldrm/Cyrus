@@ -23,7 +23,10 @@ data class CyrusUiState(
     val deckFinished: Boolean = false,
 
     //toggled from settings, determines with cards are repeated according to algorithm
-    val usingSM2: Boolean = true
+    val usingSM2: Boolean = true,
+
+    //toggled from settings, determines whether to shuffle cards for review
+    val shuffleCards: Boolean = false
 
 )
 

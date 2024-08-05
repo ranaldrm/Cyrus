@@ -29,6 +29,9 @@ interface CyrusCardDao {
     @Query("SELECT * FROM cyrus_card WHERE deckId = :deckId AND (lastReviewed IS NULL OR date(lastReviewed, '+' || interval || ' days') <= date('now'))")
     suspend fun getDueCardsForDeck(deckId: Int): List<CyrusCard>
 
+    @Query("SELECT COUNT(*) FROM cyrus_card WHERE deckId = :deckId AND (lastReviewed IS NULL OR date(lastReviewed, '+' || interval || ' days') <= date('now'))")
+    suspend fun getDueCardCountForDeck(deckId: Int): Int
+
     @Delete
     suspend fun deleteCard(card: CyrusCard)
 

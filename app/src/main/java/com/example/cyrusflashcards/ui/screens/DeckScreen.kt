@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Button
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -77,6 +79,12 @@ fun DeckScreen(
     }
 
 
+//used to show a message indicating a file was uploaded successfully
+    val snackbarHostState = remember { SnackbarHostState() }
+    var showSnackbar by remember { mutableStateOf(false) }
+    var snackbarMessage by remember { mutableStateOf("") }
+
+
 
 
     Column(
@@ -94,7 +102,7 @@ fun DeckScreen(
 
                 )
         } ?: run {
-            Text("No Deck Selected")
+            Text("No Class Selected")
         }
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -102,12 +110,12 @@ fun DeckScreen(
         Button(
             onClick = { navController.navigate("prompt") }
         ) {
-            Text("Review Cards")
+            Text("Review Class")
         }
         Button(
             onClick = { navController.navigate("create_card") }
         ) {
-            Text("Add a Card")
+            Text("Add Student")
         }
 
 
@@ -119,13 +127,13 @@ fun DeckScreen(
                 navController.popBackStack()
             }
         ) {
-            Text("Delete Deck")
+            Text("Delete Class")
         }
 //        Spacer(modifier = Modifier.height(16.dp))
 
         // Button to launch the file picker
         Button(onClick = { filePickerLauncher.launch("*/*") }) {
-            Text("Upload File")
+            Text("Bulk Upload")
         }
 
         // If a file is selected, display its path and provide a button to process it
@@ -145,6 +153,9 @@ fun DeckScreen(
                                 viewModel,
                                 uiState.currentDeckId ?: 0
                             )
+                            snackbarMessage = "File uploaded successfully"
+                            showSnackbar = true
+
                         }
                     }
                 },
@@ -159,6 +170,16 @@ fun DeckScreen(
             Text("Home")
         }
     }
+
+    if (showSnackbar) {
+        LaunchedEffect(Unit) {
+            snackbarHostState.showSnackbar(snackbarMessage)
+            showSnackbar = false
+        }
+    }
+
+    SnackbarHost(hostState = snackbarHostState)
+
 }
 
     //function takes the input stream of the file and the file type, checks if it is an excel file

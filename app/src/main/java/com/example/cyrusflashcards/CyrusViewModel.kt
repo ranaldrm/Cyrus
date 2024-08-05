@@ -42,6 +42,10 @@ class CyrusViewModel(application: Application): AndroidViewModel(application) {
         emit(cyrusDeckDao.getCardCountForDeck(deckId))
     }
 
+    fun getDueCardCountForDeck(deckId: Int): Flow<Int> = flow {
+        emit(cyrusCardDao.getDueCardCountForDeck(deckId))
+    }
+
 //also used by DeckScreen
 //    fun selectCurrentDeckByID(id: Int) {
 //        Log.d("ViewModel", "Method called in ViewModel passing $id")
@@ -81,20 +85,28 @@ class CyrusViewModel(application: Application): AndroidViewModel(application) {
                 cyrusCardDao.getCardsForDeck(deckId = id)
             }
 
+            // Shuffle the cards to review if suffle has been toggled on
+            val cardsForReview = if (_uiState.value.shuffleCards) {
+                Log.d("ViewModel", "Shuffling cards")
+                cards.shuffled()
+            } else {
+                cards
+            }
 
-            if (cards.isNotEmpty()) {
+
+            if (cardsForReview.isNotEmpty()) {
 //make sure cardIndex is within bounds
 
                 val cardIndex = 0
 //                val cardIndex = _uiState.value.cardIndex.coerceIn(0 until cards.size)
 //                Log.d("ViewModel", "Card index is $cardIndex")
                 // The current card is the first card in the list
-                val card: CyrusCard = cards[cardIndex]
+                val card: CyrusCard = cardsForReview[cardIndex]
 
                 // Update the UI state with the current deck ID, the list of cards, and the current card ID
                 _uiState.value = _uiState.value.copy(
                     currentDeckId = id,
-                    cards = cards,
+                    cards = cardsForReview,
                     currentCardId = card.cardId,
                     cardIndex = cardIndex,
                     deckFinished = false
@@ -265,6 +277,10 @@ class CyrusViewModel(application: Application): AndroidViewModel(application) {
 
     fun toggleAlgorithm(on: Boolean) {
         _uiState.value = _uiState.value.copy(usingSM2 = on)
+    }
+
+    fun toggleShuffle(on: Boolean) {
+        _uiState.value = _uiState.value.copy(shuffleCards = on)
     }
 
     fun deleteCard(id: Int) {

@@ -44,10 +44,11 @@ fun PromptScreen (
         verticalArrangement = Arrangement.Center
     ) {
         Spacer (modifier = Modifier.height(16.dp))
-        Text(
-            text = "Review Card \n Remember the name",
-            modifier = Modifier.padding(16.dp)
-        )
+//        Text(
+//            text = "Review Card",
+//
+//            modifier = Modifier.padding(16.dp)
+//        )
         Spacer (modifier = Modifier.height(16.dp))
 //        Icon(
 //            imageVector = Icons.Default.Person,
@@ -63,7 +64,7 @@ fun PromptScreen (
         )
         Spacer (modifier = Modifier.height(16.dp))
         //show imgURL or "no card Selected if something went wrong and there is no card
-        Text(currentCard?.imageURL ?: "No Card Selected")
+//        Text(currentCard?.imageURL ?: "No Card Selected")
 
 
         //wrapping for nullable - can I get rid of this?
@@ -72,7 +73,7 @@ fun PromptScreen (
         Button(
             onClick ={ navController.navigate("answer")}
         ) {
-            Text("Show Answer")
+            Text("Answer")
         }
 
 
