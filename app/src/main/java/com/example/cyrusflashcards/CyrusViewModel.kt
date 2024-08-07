@@ -15,6 +15,8 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 class CyrusViewModel(application: Application): AndroidViewModel(application) {
 
@@ -283,6 +285,13 @@ class CyrusViewModel(application: Application): AndroidViewModel(application) {
         _uiState.value = _uiState.value.copy(shuffleCards = on)
     }
 
+    fun checkAlgorithm(): Boolean {
+        return _uiState.value.usingSM2
+    }
+
+    fun checkShuffle(): Boolean {
+        return _uiState.value.shuffleCards
+    }
     fun deleteCard(id: Int) {
         viewModelScope.launch {
             cyrusCardDao.getCardById(id)?.let { cyrusCardDao.deleteCard(it) }

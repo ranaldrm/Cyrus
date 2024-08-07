@@ -9,6 +9,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -65,30 +66,56 @@ fun SettingsScreen(
 
 
 @Composable
-fun SwitchForAlg(viewModel: CyrusViewModel) {
-    var checked by remember { mutableStateOf(true) }
+fun SwitchForAlg(viewModel: CyrusViewModel = viewModel()) {
+    // Get the initial checked state from the ViewModel
+    var checked by remember { mutableStateOf(viewModel.checkAlgorithm()) }
 
     Switch(
         checked = checked,
-        onCheckedChange = {
-            checked = it
-            viewModel.toggleAlgorithm(it)
+        onCheckedChange = { isChecked ->
+            checked = isChecked
+            viewModel.toggleAlgorithm(isChecked)
         }
     )
 }
 
 @Composable
-fun SwitchForShuffle(viewModel: CyrusViewModel) {
-    var checked by remember { mutableStateOf(false) }
+fun SwitchForShuffle(viewModel: CyrusViewModel = viewModel()) {
+    // Get the initial checked state from the ViewModel
+    var checked by remember { mutableStateOf(viewModel.checkShuffle()) }
 
     Switch(
         checked = checked,
-        onCheckedChange = {
-            checked = it
-            viewModel.toggleShuffle(it)
+        onCheckedChange = { isChecked ->
+            checked = isChecked
+            viewModel.toggleShuffle(isChecked)
         }
     )
 }
+
+
+//@Composable
+//fun SwitchForAlg(viewModel: CyrusViewModel) {
+//    // Check the current state from the ViewModel when the composable is first composed
+//    val checked = remember { viewModel.checkAlgorithm() }
+//
+//    Switch(
+//        checked = checked,
+//        onCheckedChange = { viewModel.toggleAlgorithm(it) }
+//    )
+//}
+//
+//@Composable
+//fun SwitchForShuffle(viewModel: CyrusViewModel) {
+//    val checked = remember { viewModel.checkShuffle() }
+//
+//    Switch(
+//        checked = checked,
+//        onCheckedChange = {
+//            viewModel.toggleShuffle(it)
+//        }
+//    )
+//}
 
 
 
