@@ -3,9 +3,11 @@ package com.example.cyrusflashcards.data
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import kotlinx.serialization.Serializable
 
 
-
+//add serializable to also make compatible with supabase
+@Serializable
 @Entity(tableName= "cyrus_card")
 data class CyrusCard (
     @PrimaryKey(autoGenerate = true)
@@ -21,6 +23,8 @@ data class CyrusCard (
     //this is used for the SM-2 algorithm and never goes above 3, so 3 means >=3
 )
 
+//add serializable to also make compatible with supabase
+@Serializable
 @Entity(tableName= "cyrus_deck")
 data class CyrusDeck (
     @PrimaryKey(autoGenerate = true)

@@ -5,6 +5,7 @@ plugins {
     id("com.android.application")
     id("com.google.devtools.ksp") version "1.9.0-1.0.13"
     id("org.jetbrains.kotlin.android")
+    kotlin("plugin.serialization") version "1.9.0"
 
 
 
@@ -116,6 +117,11 @@ dependencies {
 
     //Coil for painting images
     implementation("io.coil-kt:coil-compose:2.1.0")
+
+    //For Supabase
+    implementation(platform("io.github.jan-tennert.supabase:bom:2.5.4"))
+    implementation("io.github.jan-tennert.supabase:postgrest-kt")
+    implementation("io.ktor:ktor-client-android:2.3.1")
 
 
 }
