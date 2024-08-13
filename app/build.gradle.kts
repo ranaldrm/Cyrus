@@ -3,9 +3,16 @@ plugins {
 //    alias(libs.plugins.android.application)
 //    alias(libs.plugins.jetbrains.kotlin.android)
     id("com.android.application")
-    id("com.google.devtools.ksp") version "1.9.0-1.0.13"
+//    id("com.google.devtools.ksp") version "1.9.0-1.0.13"
     id("org.jetbrains.kotlin.android")
-    kotlin("plugin.serialization") version "1.9.0"
+//    kotlin("plugin.serialization") version "1.9.0"
+    id("org.jetbrains.kotlin.kapt")
+
+
+    id("com.google.dagger.hilt.android")
+//    id("com.google.dagger.hilt.android")
+//    id("com.google.dagger.hilt.android") version "2.52" apply false
+
 
 
 
@@ -86,12 +93,13 @@ dependencies {
     val room_version = "2.6.1"
 
     implementation("androidx.room:room-runtime:$room_version")
+    kapt("androidx.room:room-compiler:$room_version")
     annotationProcessor("androidx.room:room-compiler:$room_version")
 
     // To use Kotlin annotation processing tool (kapt)
 
     // To use Kotlin Symbol Processing (KSP)
-    ksp("androidx.room:room-compiler:$room_version")
+//    ksp("androidx.room:room-compiler:$room_version")
 
     // optional - Kotlin Extensions and Coroutines support for Room
     implementation("androidx.room:room-ktx:$room_version")
@@ -119,9 +127,22 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.1.0")
 
     //For Supabase
-    implementation(platform("io.github.jan-tennert.supabase:bom:2.5.4"))
-    implementation("io.github.jan-tennert.supabase:postgrest-kt")
+//    implementation(platform("io.github.jan-tennert.supabase:bom:2.5.4"))
+    implementation("io.github.jan-tennert.supabase:postgrest-kt:2.5.4")
+    implementation("io.github.jan-tennert.supabase:realtime-kt:2.5.4")
+    implementation("io.github.jan-tennert.supabase:storage-kt:2.5.4")
+    implementation("io.github.jan-tennert.supabase:gotrue-kt:2.5.4")
+
+
     implementation("io.ktor:ktor-client-android:2.3.1")
+    implementation("io.ktor:ktor-client-core:2.3.1")
+    implementation("io.ktor:ktor-utils:2.3.1")
+
+    implementation("com.google.dagger:hilt-android:2.52")
+    kapt("com.google.dagger:hilt-compiler:2.52")
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+
+
 
 
 }
