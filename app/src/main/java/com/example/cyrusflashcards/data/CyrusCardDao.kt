@@ -43,6 +43,8 @@ interface CyrusCardDao {
     @Update
     suspend fun updateCard(card: CyrusCard)
 
+    @Query("SELECT * FROM cyrus_card")
+    suspend fun getAllCards(): List<CyrusCard>
 
 
 

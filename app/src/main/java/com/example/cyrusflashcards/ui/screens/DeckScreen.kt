@@ -29,8 +29,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.cyrusflashcards.CyrusHiltViewModel
 import com.example.cyrusflashcards.CyrusUiState
 import com.example.cyrusflashcards.CyrusViewModel
 import com.example.cyrusflashcards.CyrusViewModelFactory
@@ -46,7 +48,7 @@ import java.io.InputStream
 @Composable
 fun DeckScreen(
     navController: NavController,
-    viewModel: CyrusViewModel,
+    viewModel: CyrusHiltViewModel = hiltViewModel()
 ) {
 
     val uiState by viewModel.uiState.collectAsState()
@@ -187,7 +189,7 @@ fun DeckScreen(
     fun handleFileUpload(
         inputStream: InputStream,
         fileType: String?,
-        viewModel: CyrusViewModel,
+        viewModel: CyrusHiltViewModel,
         deckId: Int
     ) {
         val cards: List<CyrusCard> =

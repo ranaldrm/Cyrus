@@ -25,8 +25,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.cyrusflashcards.Authentification.AuthenticationViewModel
+import com.example.cyrusflashcards.CyrusHiltViewModel
 import com.example.cyrusflashcards.CyrusViewModel
 import com.example.cyrusflashcards.CyrusViewModelFactory
 import com.example.cyrusflashcards.data.CyrusDeck
@@ -38,7 +41,7 @@ import com.example.cyrusflashcards.data.CyrusDeck
 @Composable
 fun SelectDeckScreen(
     navController: NavController,
-    viewModel: CyrusViewModel
+    viewModel: CyrusHiltViewModel = hiltViewModel()
 
 
 ) {
@@ -76,7 +79,7 @@ fun SelectDeckScreen(
 }
 
 @Composable
-fun ScrollDecks(decks: List<CyrusDeck>, viewModel: CyrusViewModel, navController: NavController) {
+fun ScrollDecks(decks: List<CyrusDeck>, viewModel: CyrusHiltViewModel, navController: NavController) {
     LazyColumn {
         items(decks) { deck ->
 
@@ -89,7 +92,7 @@ fun ScrollDecks(decks: List<CyrusDeck>, viewModel: CyrusViewModel, navController
 @Composable
 fun DeckView(
     deck: CyrusDeck,
-    viewModel: CyrusViewModel,
+    viewModel: CyrusHiltViewModel,
     navController: NavController,
     deckId: Int = deck.deckId
 
@@ -103,7 +106,7 @@ fun DeckView(
             Log.d("SelectDeckScreen", "Deck clicked")
             Log.d("SelectDeckScreen","Current deck id in list is $deckId ")
             viewModel.selectCurrentDeckByID(deckId)
-            Log.d("DeckScreen", "currentDeck is null: ${viewModel.currentDeckID == null}")
+//            Log.d("DeckScreen", "currentDeck is null: ${viewModel.currentDeckID == null}")
 
             navController.navigate("deck")
 

@@ -1,5 +1,6 @@
 package com.example.cyrusflashcards
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -26,7 +27,7 @@ import androidx.compose.ui.Alignment
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CyrusAppBar(
-
+    userEmail: String,
     canGoToSettings: Boolean,
     canNavigateBack: Boolean,
     navigateToSettings: () -> Unit,
@@ -34,7 +35,9 @@ fun CyrusAppBar(
     modifier: Modifier = Modifier
 ) {
     CenterAlignedTopAppBar(
-        title = { Text("CYRUS FLASHCARDS") },
+        title = {
+            Log.d("CyrusAppBar", "Displaying email: $userEmail")
+            Text("Cyrus Flashcards") },
         colors = TopAppBarDefaults.mediumTopAppBarColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer
         ),

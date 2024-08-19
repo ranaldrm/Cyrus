@@ -22,11 +22,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.cyrusflashcards.CyrusHiltViewModel
 import com.example.cyrusflashcards.CyrusViewModel
 
 @Composable
-fun CreateCardScreen (navController: NavController, viewModel: CyrusViewModel){
+fun CreateCardScreen (
+    navController: NavController,
+
+    viewModel: CyrusHiltViewModel = hiltViewModel()
+){
     var nameText by remember { mutableStateOf("") }
     var imageText by remember { mutableStateOf("") }
     Column (
@@ -65,7 +71,7 @@ fun CreateCardScreen (navController: NavController, viewModel: CyrusViewModel){
             onClick = {
                 //find the deck in DataSource that corresponds to the
                 //deck in currentDeck and add a card?
-                val currentDeckID = viewModel.currentDeckID
+                val currentDeckID = viewModel.getCurrentCardId()
                 viewModel.createCard(currentDeckID, nameText, imageText)
                 navController.popBackStack()
 

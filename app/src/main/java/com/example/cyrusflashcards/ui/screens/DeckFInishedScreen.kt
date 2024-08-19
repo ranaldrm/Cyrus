@@ -10,13 +10,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.cyrusflashcards.CyrusHiltViewModel
 import com.example.cyrusflashcards.CyrusViewModel
 
 @Composable
 fun DeckFinishedScreen(
     navController: NavController,
-    viewModel: CyrusViewModel
+    viewModel: CyrusHiltViewModel = hiltViewModel()
 ) {
     Box(
         modifier = Modifier.fillMaxSize(),

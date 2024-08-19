@@ -19,7 +19,7 @@ import com.example.cyrusflashcards.CyrusViewModelFactory
 @Composable
 fun HomeScreen (
     navController: NavController,
-    viewModel: CyrusViewModel
+
 ) {
 
     Column (
@@ -33,11 +33,11 @@ fun HomeScreen (
             modifier = Modifier.padding(16.dp)
         )
 
-        Button(
-            onClick ={ navController.navigate("deck_select")}
-        ) {
-            Text("Select a Deck")
-        }
+//        Button(
+//            onClick ={ navController.navigate("deck_select")}
+//        ) {
+//            Text("Select a Deck")
+//        }
 
     }
 }

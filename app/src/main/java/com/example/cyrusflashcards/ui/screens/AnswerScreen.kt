@@ -27,8 +27,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
+import com.example.cyrusflashcards.CyrusHiltViewModel
 import com.example.cyrusflashcards.CyrusViewModel
 import com.example.cyrusflashcards.navigateAndAdvance
 import kotlinx.coroutines.delay
@@ -38,7 +40,7 @@ import kotlinx.coroutines.delay
 @Composable
 fun AnswerScreen(
     navController: NavController,
-    viewModel: CyrusViewModel
+    viewModel: CyrusHiltViewModel = hiltViewModel()
 ) {
 
     val currentCard by viewModel.getCurrentCard().collectAsState(initial = null)

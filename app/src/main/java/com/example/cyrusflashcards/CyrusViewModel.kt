@@ -44,6 +44,8 @@ class CyrusViewModel(application: Application): AndroidViewModel(application) {
         emit(cyrusDeckDao.getCardCountForDeck(deckId))
     }
 
+
+
     fun getDueCardCountForDeck(deckId: Int): Flow<Int> = flow {
         emit(cyrusCardDao.getDueCardCountForDeck(deckId))
     }

@@ -24,16 +24,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
+import com.example.cyrusflashcards.CyrusHiltViewModel
 import com.example.cyrusflashcards.CyrusViewModel
 
 //^^^^^^^^^^^^^^^^^^Uses 1 ViewModel methods: getCurrentCard^^^^^^^^^^^^^^^^^^^^
 @Composable
 fun PromptScreen (
     navController: NavController,
-    viewModel: CyrusViewModel
+    viewModel: CyrusHiltViewModel = hiltViewModel()
 
 ) {
 //    val currentDeck by viewModel.getCurrentDeck().collectAsState(initial = null)

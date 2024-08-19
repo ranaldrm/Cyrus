@@ -19,14 +19,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.cyrusflashcards.CyrusHiltViewModel
 import com.example.cyrusflashcards.CyrusViewModel
+import com.example.cyrusflashcards.SyncViewModel
 
 @Composable
 fun SettingsScreen(
     navController: NavController,
-    viewModel: CyrusViewModel
+    viewModel: CyrusHiltViewModel = hiltViewModel(),
+    syncViewModel: SyncViewModel = hiltViewModel()
+
 ) {
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -47,9 +52,14 @@ fun SettingsScreen(
             }
 
             Button(
-                onClick = { viewModel.deleteAllDescks() }
-            ) {
+                    onClick = { viewModel.deleteAllDescks() }
+                    ) {
                 Text("Delete All")
+            }
+            Button(
+                onClick = { syncViewModel.syncLocalToSupabase() }
+            ) {
+                Text("Sync Up")
             }
             Spacer(modifier = Modifier.height(16.dp))
             Text(text = "Use SM-2 algorithm")
@@ -66,7 +76,7 @@ fun SettingsScreen(
 
 
 @Composable
-fun SwitchForAlg(viewModel: CyrusViewModel = viewModel()) {
+fun SwitchForAlg(viewModel: CyrusHiltViewModel = viewModel()) {
     // Get the initial checked state from the ViewModel
     var checked by remember { mutableStateOf(viewModel.checkAlgorithm()) }
 
@@ -80,7 +90,7 @@ fun SwitchForAlg(viewModel: CyrusViewModel = viewModel()) {
 }
 
 @Composable
-fun SwitchForShuffle(viewModel: CyrusViewModel = viewModel()) {
+fun SwitchForShuffle(viewModel: CyrusHiltViewModel = viewModel()) {
     // Get the initial checked state from the ViewModel
     var checked by remember { mutableStateOf(viewModel.checkShuffle()) }
 

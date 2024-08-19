@@ -18,7 +18,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.cyrusflashcards.CyrusHiltViewModel
 import com.example.cyrusflashcards.CyrusViewModel
 import com.example.cyrusflashcards.data.CyrusDeck
 import com.example.cyrusflashcards.data.DataSource
@@ -26,7 +28,7 @@ import com.example.cyrusflashcards.data.DataSource
 @Composable
 fun CreateDeckScreen (
     navController: NavController,
-    viewModel: CyrusViewModel
+    viewModel: CyrusHiltViewModel = hiltViewModel()
 
 ) {
     var nameText by remember { mutableStateOf("") }
@@ -61,7 +63,7 @@ fun CreateDeckScreen (
                 navController.popBackStack()
             }
         ) {
-            Text("Create Deck")
+            Text("Create Class")
         }
 
 

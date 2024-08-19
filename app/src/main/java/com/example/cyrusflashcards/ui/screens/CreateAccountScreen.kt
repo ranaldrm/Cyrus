@@ -10,6 +10,8 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -20,51 +22,127 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.cyrusflashcards.Authentification.AuthenticationViewModel
 import com.example.cyrusflashcards.CyrusViewModel
 import com.example.cyrusflashcards.R
 
+
+
 @Composable
-fun CreateAccountScreen (navController: NavController, viewModel: CyrusViewModel){
-    var username by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    Column (
+fun CreateAccountScreen(
+    navController: NavController,
+    viewModel: AuthenticationViewModel = hiltViewModel()
+) {
+
+    Column(
         modifier = Modifier
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
-
     ) {
 
+        val email by viewModel.email.collectAsState(initial = "")
+        val password by viewModel.password.collectAsState()
+        val signUpSuccess by viewModel.signUpSuccess.collectAsState(initial = false)
 
-        Spacer (modifier = Modifier.height(16.dp))
-        Text("Create an Account",
-            fontSize = 30.sp,
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(
+            "Sign Up",
+            fontSize = 40.sp,
             fontWeight = FontWeight.Bold
         )
-        Spacer (modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
         TextField(
-            value = username,
-            onValueChange = {password = it},
-            label = { Text("Enter a name") }
+            value = email,
+            onValueChange = { viewModel.changeEmail(it) },
+            label = { Text("Enter email address:") }
         )
-        Spacer (modifier = Modifier.height(16.dp))
-        TextField(
-            value = username,
-            onValueChange = {password = it},
-            label = { Text("Enter a password") }
-        )
+        Spacer(modifier = Modifier.height(16.dp))
 
-        Spacer (modifier = Modifier.height(16.dp))
-        Button (
+        TextField(
+            value = password,
+            onValueChange = { viewModel.changePassword(it) },
+            label = { Text("Enter password:") }
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Button(
             onClick = {
-
-
+                viewModel.signUp()
             }
         ) {
-            Text("Create Account")
+            Text("Sign Up")
         }
 
+        // Observe the sign-up success and navigate to the login screen if successful
+        if (signUpSuccess) {
+            LaunchedEffect(Unit) {
+                navController.navigate("login")
+            }
+        }
     }
 }
+
+
+
+
+//
+//@Composable
+//fun CreateAccountScreen(
+//    navController: NavController,
+//    viewModel: AuthenticationViewModel = hiltViewModel()
+//) {
+//
+//    Column(
+//        modifier = Modifier
+//            .fillMaxSize(),
+//        horizontalAlignment = Alignment.CenterHorizontally,
+//        verticalArrangement = Arrangement.Center
+//    ) {
+//
+//        val email by viewModel.email.collectAsState(initial = "")
+//        val password by viewModel.password.collectAsState()
+//
+//        Spacer(modifier = Modifier.height(16.dp))
+//        Text(
+//            "Sign Up",
+//            fontSize = 40.sp,
+//            fontWeight = FontWeight.Bold
+//        )
+//        Spacer(modifier = Modifier.height(16.dp))
+//
+//        TextField(
+//            value = email,
+//            onValueChange = { viewModel.changeEmail(it) },
+//            label = { Text("Enter email address:") }
+//        )
+//        Spacer(modifier = Modifier.height(16.dp))
+//
+//        TextField(
+//            value = password,
+//            onValueChange = { viewModel.changePassword(it) },
+//            label = { Text("Enter password:") }
+//        )
+//        Spacer(modifier = Modifier.height(16.dp))
+//
+//        Button(
+//            onClick = {
+//                viewModel.signUp()
+//            }
+//        ) {
+//            Text("Sign Up")
+//        }
+//
+//        // Observe the sign-up process and navigate to the login screen if successful
+//        androidx.compose.runtime.LaunchedEffect(viewModel.email) {
+//            viewModel.email.collect { currentEmail ->
+//                if (currentEmail.isNotEmpty()) {
+//                    navController.navigate("login")
+//                }
+//            }
+//        }
+//    }
+//}
