@@ -46,6 +46,12 @@ interface CyrusCardDao {
     @Query("SELECT * FROM cyrus_card")
     suspend fun getAllCards(): List<CyrusCard>
 
+//used by the synViewModel to clear out the database before downloading
+    @Query("DELETE FROM cyrus_card")
+    suspend fun deleteAllCards()
+
+
+
 
 
 }

@@ -52,14 +52,20 @@ fun SettingsScreen(
             }
 
             Button(
-                    onClick = { viewModel.deleteAllDescks() }
+                    onClick = { viewModel.deleteAllDescks()
+                    viewModel.deleteAllCards()}
                     ) {
-                Text("Delete All")
+                Text("Delete Local")
             }
             Button(
-                onClick = { syncViewModel.syncLocalToSupabase() }
+                onClick = { syncViewModel.syncLocalToSupabaseWithBucketManagement() }
             ) {
                 Text("Sync Up")
+            }
+            Button(
+                onClick = { syncViewModel.syncSupabaseToLocal() }
+            ) {
+                Text("Sync Down")
             }
             Spacer(modifier = Modifier.height(16.dp))
             Text(text = "Use SM-2 algorithm")

@@ -27,6 +27,7 @@ import com.example.cyrusflashcards.ui.screens.LoginScreen
 import com.example.cyrusflashcards.ui.screens.SettingsScreen
 import androidx.compose.runtime.LaunchedEffect
 import com.example.cyrusflashcards.ui.screens.AnswerScreen
+import com.example.cyrusflashcards.ui.screens.ChangeDeckScreen
 import com.example.cyrusflashcards.ui.screens.CreateCardScreen
 import com.example.cyrusflashcards.ui.screens.CreateDeckScreen
 import com.example.cyrusflashcards.ui.screens.DeckFinishedScreen
@@ -112,6 +113,10 @@ fun CyrusAppNavigation(
 
                 composable("settings") {
                     SettingsScreen(navController)
+                }
+
+                composable("change_deck") {
+                    ChangeDeckScreen(navController)
                 }
 
 

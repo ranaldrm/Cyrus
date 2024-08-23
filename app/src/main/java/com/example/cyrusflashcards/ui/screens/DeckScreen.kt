@@ -1,6 +1,5 @@
 package com.example.cyrusflashcards.ui.screens
 
-import android.app.Application
 import android.net.Uri
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -9,7 +8,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Button
 import androidx.compose.material3.SnackbarHost
@@ -33,12 +31,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.cyrusflashcards.CyrusHiltViewModel
-import com.example.cyrusflashcards.CyrusUiState
-import com.example.cyrusflashcards.CyrusViewModel
-import com.example.cyrusflashcards.CyrusViewModelFactory
 import com.example.cyrusflashcards.data.CyrusCard
-import com.example.cyrusflashcards.data.CyrusDeck
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import org.apache.poi.ss.usermodel.WorkbookFactory
 import java.io.InputStream
@@ -194,7 +187,7 @@ fun DeckScreen(
     ) {
         val cards: List<CyrusCard> =
             if (fileType == "application/vnd.ms-excel" || fileType == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
-                readExcelFile(inputStream, deckId)
+                readExcelFile(inputStream, deckId, viewModel)
             } else {
                 emptyList()
             }
@@ -203,7 +196,7 @@ fun DeckScreen(
 
     //Function turns input stream into a list of cards. by turning it into a workbook and cycling through
 //the rows
-    fun readExcelFile(inputStream: InputStream, deckId: Int): List<CyrusCard> {
+    fun readExcelFile(inputStream: InputStream, deckId: Int, viewModel: CyrusHiltViewModel): List<CyrusCard> {
         val workbook = WorkbookFactory.create(inputStream)
         val sheet = workbook.getSheetAt(0)
         val cards = mutableListOf<CyrusCard>()
@@ -211,7 +204,9 @@ fun DeckScreen(
         for (row in sheet) {
             val name = row.getCell(0).stringCellValue
             val imageURL = row.getCell(1).stringCellValue
-            val card = CyrusCard(deckId = deckId, name = name, imageURL = imageURL)
+            val userId = viewModel.getCurrentUserID()
+
+            val card = CyrusCard(deckId = deckId, name = name, imageURL = imageURL, userID = userId)
             cards.add(card)
         }
 

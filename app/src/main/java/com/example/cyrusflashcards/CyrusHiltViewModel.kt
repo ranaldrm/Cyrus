@@ -12,23 +12,32 @@ import com.example.cyrusflashcards.data.CyrusDeckDao
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.postgrest.Postgrest
-import io.github.jan.supabase.postgrest.from
-import io.github.jan.supabase.postgrest.query.Columns
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
+import io.github.jan.supabase.gotrue.Auth
+import android.net.Uri
+import dagger.hilt.android.internal.Contexts.getApplication
+import android.app.Application
+import java.io.File
+import java.io.FileOutputStream
+import java.io.InputStream
+import java.util.UUID
 
 
 @HiltViewModel
 class CyrusHiltViewModel @Inject constructor(
+    private val application: Application,
     private val supabaseClient: SupabaseClient,
     private val cyrusCardDao: CyrusCardDao,
     private val cyrusDeckDao: CyrusDeckDao,
     private val supabasePostgrest: Postgrest,
-    private val cyrusRepository: CyrusRepository
+    private val cyrusRepository: CyrusRepository,
+    private val auth: Auth
+
 ) : ViewModel() {
 
     val uiState: StateFlow<CyrusUiState> get() = cyrusRepository.uiState
@@ -297,6 +306,83 @@ class CyrusHiltViewModel @Inject constructor(
     }
 
 
+////////////////////CREATECARD SCREEN////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////
+
+    //used in createCard to get ID for card constructor
+    fun getCurrentDeckId(): Int? {    //Used in CreateCardScreen
+        return cyrusRepository.uiState.value.currentDeckId
+    }
+
+
+    fun createCard(deckId: Int?, name: String, uri: Uri?) {
+        deckId?.let { id ->
+            val userId = auth.currentUserOrNull()?.id
+
+            // Save the image from URI to internal storage and get the resulting path
+            val imagePath: String? = uri?.let { saveImageToInternalStorage(it) }
+
+            // Create the CyrusCard object, ensuring imagePath is used correctly
+            val card = CyrusCard(
+                deckId = id,
+                name = name,
+                imageURI = imagePath ?: "no URL entered",
+                userID = userId
+            )
+
+            // Save the card to the database
+            viewModelScope.launch {
+                cyrusCardDao.addCard(card)
+            }
+        }
+    }
+
+//    fun createCard(deckId: Int?, name: String, uri: Uri?) {
+//        deckId?.let {
+//            val deckId = getCurrentDeckId()
+//            val userId = auth.currentUserOrNull()?.id
+//
+//            val imagePath = uri?.let { uri -> saveImageToInternalStorage(uri) }
+//            val card =
+//                imagePath?.let { it1 ->
+//                    if (deckId != null) {
+//                        CyrusCard(deckId = deckId, name = name, imageURL = it1, userID = userId)
+//                    }
+//                }
+//            viewModelScope.launch {
+//                if (card != null) {
+//                    cyrusCardDao.addCard(card)
+//                }
+//            }
+//        }
+//    }
+
+    fun saveImageToInternalStorage(uri: Uri): String? {
+        val context = application.applicationContext
+        return try {
+            // Create a unique file name
+            val fileName = "${UUID.randomUUID()}.jpg"
+            // Create a file in the internal storage
+            val file = File(context.filesDir, fileName)
+
+            // Open the input stream from the URI and write it to the file
+            val inputStream: InputStream? = context.contentResolver.openInputStream(uri)
+            val outputStream = FileOutputStream(file)
+
+            inputStream?.use { input ->
+                outputStream.use { output ->
+                    input.copyTo(output)
+                }
+            }
+
+            // Return the file path
+            file.absolutePath
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
 
 
 
@@ -307,14 +393,8 @@ class CyrusHiltViewModel @Inject constructor(
         return cyrusRepository.uiState.value.currentCardId
     }
 
-    fun createCard(deckId: Int?, name: String, url: String) {
-        deckId?.let {
-            val card = CyrusCard(deckId = it, name = name, imageURL = url)
-            viewModelScope.launch {
-                cyrusCardDao.addCard(card)
-            }
-        }
-    }
+
+
 
     fun deleteCurrentDeck() {
         val currentDeckId = cyrusRepository.uiState.value.currentDeckId
@@ -324,7 +404,8 @@ class CyrusHiltViewModel @Inject constructor(
 
     fun createDeck(name: String) {
         viewModelScope.launch {
-            val deck = CyrusDeck(name = name)
+            val userId = auth.currentUserOrNull()?.id
+            val deck = CyrusDeck(name = name, userID = userId)
             cyrusDeckDao.createDeck(deck)
         }
     }
@@ -335,9 +416,20 @@ class CyrusHiltViewModel @Inject constructor(
         }
     }
 
+    fun deleteAllCards() {
+        viewModelScope.launch {
+            cyrusCardDao.deleteAllCards()
+        }
+    }
+
 
     fun getDeckById(id: Int): Flow<CyrusDeck> = flow {
         cyrusDeckDao.getDeckById(id)?.let { emit(it) }
+    }
+
+    fun getCurrentUserID (): String? {
+        val userId = auth.currentUserOrNull()?.id
+        return userId
     }
 
 

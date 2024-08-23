@@ -7,7 +7,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import android.util.Log
 
-@Database(entities = [CyrusCard::class, CyrusDeck::class], version = 3)
+@Database(entities = [CyrusCard::class, CyrusDeck::class], version = 6)
 abstract class CyrusDatabase : RoomDatabase() {
     abstract fun cyrusCardDao(): CyrusCardDao
     abstract fun cyrusDeckDao(): CyrusDeckDao

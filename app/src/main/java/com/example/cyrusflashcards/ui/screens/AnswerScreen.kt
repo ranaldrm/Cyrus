@@ -75,13 +75,15 @@ fun AnswerScreen(
 //            contentDescription = "person",
 //            modifier = Modifier.size(100.dp)
 //        )
-        Image(
-            painter = rememberAsyncImagePainter(model = currentCard?.imageURL),
-            contentDescription = null,
-            modifier = Modifier
-                .height(200.dp),
-            contentScale = ContentScale.Crop
-        )
+        //comes from PromptScreen kotlin file, gives priority to URL but if no URL displays from URI
+        DisplayCardImage(currentCard)
+//        Image(
+//            painter = rememberAsyncImagePainter(model = currentCard?.imageURL),
+//            contentDescription = null,
+//            modifier = Modifier
+//                .height(200.dp),
+//            contentScale = ContentScale.Crop
+//        )
         Spacer(modifier = Modifier.height(16.dp))
         Text(currentCard?.name ?: "No Card Selected")
         Spacer(modifier = Modifier.height(16.dp))
@@ -126,6 +128,13 @@ fun AnswerScreen(
 
         ) {
             Text("Delete")
+        }
+        Button (
+            onClick = {
+                navController.navigate("change_deck")
+            }
+        ) {
+            Text("Change Deck")
         }
     }
 

@@ -24,12 +24,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
 import com.example.cyrusflashcards.CyrusHiltViewModel
 import com.example.cyrusflashcards.CyrusViewModel
+import com.example.cyrusflashcards.data.CyrusCard
+import java.io.File
 
 //^^^^^^^^^^^^^^^^^^Uses 1 ViewModel methods: getCurrentCard^^^^^^^^^^^^^^^^^^^^
 @Composable
@@ -62,13 +65,15 @@ fun PromptScreen (
 //            contentDescription = "person",
 //            modifier = Modifier.size(100.dp)
 //        )
-        Image(
-            painter = rememberAsyncImagePainter(model = currentCard?.imageURL),
-            contentDescription = null,
-            modifier = Modifier
-                .height(200.dp),
-            contentScale = ContentScale.Crop
-        )
+// display card composable below- gives priority to URL if no URL, goes by URI
+        DisplayCardImage(currentCard)
+//        Image(
+//            painter = rememberAsyncImagePainter(model = currentCard?.imageURL),
+//            contentDescription = null,
+//            modifier = Modifier
+//                .height(200.dp),
+//            contentScale = ContentScale.Crop
+//        )
         Spacer (modifier = Modifier.height(16.dp))
         //show imgURL or "no card Selected if something went wrong and there is no card
 //        Text(currentCard?.imageURL ?: "No Card Selected")
@@ -88,5 +93,23 @@ fun PromptScreen (
     }
 
 
+}
+//ives priority to URL if no URL, goes by URI
+@Composable
+fun DisplayCardImage(currentCard: CyrusCard?) {
+    // Determine the image source based on the URL
+    val imageSource = if (currentCard?.imageURL == "no URL entered") {
+        currentCard?.imageURI?.let { File(it).toUri() } // Use the local URI if no URL is entered
+    } else {
+        currentCard?.imageURL // Use the URL if it's provided
+    }
 
+    // Load and display the image
+    Image(
+        painter = rememberAsyncImagePainter(model = imageSource),
+        contentDescription = null,
+        modifier = Modifier
+            .height(200.dp),
+        contentScale = ContentScale.Crop
+    )
 }

@@ -27,7 +27,7 @@ interface CyrusDeckDao {
     suspend fun getCardCountForDeck(deckId: Int): Int
 
 
-
+    //used by the synViewModel to clear out the database before downloading
     @Query("DELETE FROM cyrus_deck")
     suspend fun deleteAllDecks()
 

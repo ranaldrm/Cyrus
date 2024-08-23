@@ -9,11 +9,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.cyrusflashcards.data.CyrusCard
 import com.example.cyrusflashcards.data.CyrusDatabase
 import com.example.cyrusflashcards.data.CyrusDeck
-import com.example.cyrusflashcards.data.CyrusDeckDao
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.time.LocalDate
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -303,7 +300,7 @@ class CyrusViewModel(application: Application): AndroidViewModel(application) {
 
     fun createCard(deckId: Int?, name: String, url: String) {
         deckId?.let {
-            val card = CyrusCard(deckId = it, name = name, imageURL = url)
+            val card = CyrusCard(deckId = it, name = name, imageURL = url, userID = "1")
             viewModelScope.launch {
                 cyrusCardDao.addCard(card)
             }
@@ -324,7 +321,7 @@ class CyrusViewModel(application: Application): AndroidViewModel(application) {
 
     fun createDeck(name: String) {
         viewModelScope.launch {
-            val deck = CyrusDeck(name = name)
+            val deck = CyrusDeck(name = name, userID = "1")
             cyrusDeckDao.createDeck(deck)
         }
     }

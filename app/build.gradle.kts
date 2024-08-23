@@ -149,6 +149,10 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.1")
 
 
+    //for getting images from storage
+    implementation ("com.google.accompanist:accompanist-permissions:0.24.13-rc")
+
+
 
 
 }
