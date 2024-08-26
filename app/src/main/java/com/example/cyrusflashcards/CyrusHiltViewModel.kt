@@ -433,6 +433,19 @@ class CyrusHiltViewModel @Inject constructor(
     }
 
 
+    suspend fun changeDeck (newDeckId: Int) {
+        viewModelScope.launch {
+            val currentCardId = cyrusRepository.uiState.value.currentCardId
+            val card = currentCardId?.let { cyrusCardDao.getCardById(it) }
+            if (card != null) {
+                card.deckId = newDeckId
+                cyrusCardDao.updateCard(card)
+
+            }
+
+        }
+    }
+
 
 
 
