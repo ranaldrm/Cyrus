@@ -152,6 +152,8 @@ dependencies {
     //for getting images from storage
     implementation ("com.google.accompanist:accompanist-permissions:0.24.13-rc")
 
+    testImplementation("junit:junit:4.13.2")
+
 
 
 

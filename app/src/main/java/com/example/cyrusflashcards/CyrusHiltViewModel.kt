@@ -22,6 +22,7 @@ import io.github.jan.supabase.gotrue.Auth
 import android.net.Uri
 import dagger.hilt.android.internal.Contexts.getApplication
 import android.app.Application
+import org.jetbrains.annotations.VisibleForTesting
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
@@ -207,6 +208,7 @@ class CyrusHiltViewModel @Inject constructor(
 
 
     //needs an API of >=26 to get current date
+    @VisibleForTesting
     @RequiresApi(Build.VERSION_CODES.O)
     fun updateCardeFactorAndInterval (card: CyrusCard, qFactor: Int) {
         val newEFactor = calculateNewEFactor(card.eFactor, qFactor)
@@ -223,7 +225,8 @@ class CyrusHiltViewModel @Inject constructor(
     }
 
     //used in updateCardeFactorAndInterval
-    private fun calculateNewInterval (interval: Int, reviewCount: Int, eFactor: Double): Int {
+    @VisibleForTesting
+    internal fun calculateNewInterval (interval: Int, reviewCount: Int, eFactor: Double): Int {
         var newInterval = interval
         if (reviewCount == 1 ) {
             newInterval = 1
@@ -236,7 +239,8 @@ class CyrusHiltViewModel @Inject constructor(
     }
 
     //used in updateCardeFactorAndInterval
-    private fun calculateNewEFactor(eFactor: Double, qFactor: Int): Double {
+    @VisibleForTesting
+    internal fun calculateNewEFactor(eFactor: Double, qFactor: Int): Double {
         var newEfactor = eFactor + (0.1 - (5 - qFactor) * (0.08 + (5 - qFactor) * 0.02))
 
 //minium Efactor of 1.3
