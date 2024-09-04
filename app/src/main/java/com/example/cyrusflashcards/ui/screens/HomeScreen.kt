@@ -33,11 +33,6 @@ fun HomeScreen (
             modifier = Modifier.padding(16.dp)
         )
 
-//        Button(
-//            onClick ={ navController.navigate("deck_select")}
-//        ) {
-//            Text("Select a Deck")
-//        }
 
     }
 }

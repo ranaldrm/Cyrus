@@ -56,21 +56,7 @@ class AuthenticationViewModel @Inject constructor(
     }
 
 
-//    fun signIn() {
-//        viewModelScope.launch {
-//            val signInSuccessful = authenticationRepository.signIn(
-//                email = _email.value,
-//                password = _password.value
-//            )
-//            if (signInSuccessful) {
-//                _isAuthenticated.value = true
-//                Log.d("AuthenticationViewModel", "User email set to: $email")
-//            } else {
-//                _isAuthenticated.value = false
-//                Log.e("AuthenticationViewModel", "Sign in failed")
-//            }
-//        }
-//    }
+
 
     fun signUp() {
         viewModelScope.launch {
@@ -99,42 +85,12 @@ class AuthenticationViewModel @Inject constructor(
         }
     }
 
-    // Call this method whenever you need the email, like when initializing the ViewModel
+    // Call this method when need to get the email, like when initializing the ViewModel
     fun initialize() {
         fetchCurrentUserEmail()
     }
 
 
 }
-
-//    fun signUp() {
-//        Log.d("AuthenticationViewModel", "Attempting sign up with email: ${_email.value}")
-//        viewModelScope.launch {
-//            val signUpSuccessful = authenticationRepository.signUp(
-//                email = _email.value,
-//                password = _password.value
-//            )
-//            if (signUpSuccessful) {
-//                Log.d("AuthenticationViewModel", "Sign up successful")
-//            } else {
-//                Log.e("AuthenticationViewModel", "Sign up failed")
-//            }
-//        }
-//    }
-//
-//    fun signIn() {
-//        viewModelScope.launch {
-//            Log.d("AuthenticationViewModel", "Attempting sign in with email: ${_email.value}")
-//            val signInSuccessful =  authenticationRepository.signIn(
-//                email = _email.value,
-//                password = _password.value
-//            )
-//            if (signInSuccessful) {
-//                Log.d("AuthenticationViewModel", "Sign in successful")
-//            } else {
-//                Log.e("AuthenticationViewModel", "Sign in failed")
-//            }
-//        }
-//    }
 
 

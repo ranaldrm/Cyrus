@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-
+// remember to update the database version
 //add serializable to also make compatible with supabase
 @Serializable
 @Entity(tableName= "cyrus_card")

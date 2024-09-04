@@ -43,6 +43,7 @@ fun PromptScreen (
 ) {
 //    val currentDeck by viewModel.getCurrentDeck().collectAsState(initial = null)
     val currentCard by viewModel.getCurrentCard().collectAsState(initial = null)
+//    var shouldGoToAnswer by remember { mutableStateOf(false) }
 
 
 
@@ -85,7 +86,7 @@ fun PromptScreen (
         Button(
             onClick ={ navController.navigate("answer")}
         ) {
-            Text("Answer")
+            Text("Name")
         }
 
 

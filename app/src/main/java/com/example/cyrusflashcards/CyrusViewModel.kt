@@ -14,7 +14,11 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+///!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Deprecated- use CyrusHiltViewModel!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
+
+
+//////////////!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 class CyrusViewModel(application: Application): AndroidViewModel(application) {
 
     private val _uiState = MutableStateFlow(CyrusUiState())

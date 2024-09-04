@@ -6,6 +6,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -28,18 +29,23 @@ class DeepLinkHandlerActivity : ComponentActivity() {
     @Inject
     lateinit var supabaseClient: SupabaseClient
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Obtain the SyncViewModel using ViewModelProvider
+        val syncViewModel: SyncViewModel by viewModels()
 
         // Handle the deep link intent
         supabaseClient.handleDeeplinks(intent = intent,
             onSessionSuccess = { userSession ->
                 userSession.user?.let { user ->
                     Log.d("LOGIN", "Log in successfully with user info: $user")
+                    syncViewModel.syncSupabaseToLocal()
                     navigateToMainApp()
                 } ?: run {
-                    Log.e("LOGIN", "User session is null or invalid")
-                    // Handle the failure scenario here
+                    Log.e("LOGIN", "Log in failure")
+                    // Handle failure
                     handleFailure()
                 }
             }
@@ -55,8 +61,8 @@ class DeepLinkHandlerActivity : ComponentActivity() {
     }
 
     private fun handleFailure() {
-        // Optionally, navigate to a login screen or show an error message
-        Toast.makeText(this, "Failed to log in. Please try again.", Toast.LENGTH_LONG).show()
-        finish()  // Finish the activity, or redirect to a different activity as needed
+
+        Toast.makeText(this, "Failed to log in..", Toast.LENGTH_LONG).show()
+        finish()
     }
 }

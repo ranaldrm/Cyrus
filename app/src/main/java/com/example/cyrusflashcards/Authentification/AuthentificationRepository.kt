@@ -42,7 +42,7 @@ class AuthenticationRepository @Inject constructor(
 
     suspend fun getCurrentUserEmail(): String? {
         return try {
-            val session = auth.currentSessionOrNull() // Use the appropriate method here
+            val session = auth.currentSessionOrNull()
             session?.user?.email
         } catch (e: Exception) {
             Log.e("AuthenticationRepository", "Failed to fetch current user email", e)

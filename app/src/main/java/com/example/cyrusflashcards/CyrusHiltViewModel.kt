@@ -341,25 +341,7 @@ class CyrusHiltViewModel @Inject constructor(
         }
     }
 
-//    fun createCard(deckId: Int?, name: String, uri: Uri?) {
-//        deckId?.let {
-//            val deckId = getCurrentDeckId()
-//            val userId = auth.currentUserOrNull()?.id
-//
-//            val imagePath = uri?.let { uri -> saveImageToInternalStorage(uri) }
-//            val card =
-//                imagePath?.let { it1 ->
-//                    if (deckId != null) {
-//                        CyrusCard(deckId = deckId, name = name, imageURL = it1, userID = userId)
-//                    }
-//                }
-//            viewModelScope.launch {
-//                if (card != null) {
-//                    cyrusCardDao.addCard(card)
-//                }
-//            }
-//        }
-//    }
+
 
     fun saveImageToInternalStorage(uri: Uri): String? {
         val context = application.applicationContext

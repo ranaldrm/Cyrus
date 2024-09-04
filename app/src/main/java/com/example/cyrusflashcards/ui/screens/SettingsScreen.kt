@@ -58,7 +58,7 @@ fun SettingsScreen(
                 Text("Delete Local")
             }
             Button(
-                onClick = { syncViewModel.syncLocalToSupabaseWithBucketManagement() }
+                onClick = { syncViewModel.syncLocalToSupabase() }
             ) {
                 Text("Sync Up")
             }
@@ -109,44 +109,3 @@ fun SwitchForShuffle(viewModel: CyrusHiltViewModel = viewModel()) {
     )
 }
 
-
-//@Composable
-//fun SwitchForAlg(viewModel: CyrusViewModel) {
-//    // Check the current state from the ViewModel when the composable is first composed
-//    val checked = remember { viewModel.checkAlgorithm() }
-//
-//    Switch(
-//        checked = checked,
-//        onCheckedChange = { viewModel.toggleAlgorithm(it) }
-//    )
-//}
-//
-//@Composable
-//fun SwitchForShuffle(viewModel: CyrusViewModel) {
-//    val checked = remember { viewModel.checkShuffle() }
-//
-//    Switch(
-//        checked = checked,
-//        onCheckedChange = {
-//            viewModel.toggleShuffle(it)
-//        }
-//    )
-//}
-
-
-
-
-
-
-//{
-//    Column {
-//        Text (text = "Settings")
-//        Button(
-//            onClick ={ viewModel.deleteAllDescks()}
-//        ) {
-//            Text("Delete All Decks")
-//        }
-//    }
-//
-//
-//}

@@ -13,6 +13,4 @@ class CyrusRepository @Inject constructor() {
     fun updateUiState(newUiState: CyrusUiState) {
         _uiState.value = newUiState
     }
-
-
 }

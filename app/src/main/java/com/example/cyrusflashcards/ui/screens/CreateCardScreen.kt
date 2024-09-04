@@ -48,7 +48,7 @@ fun CreateCardScreen(
         contract = ActivityResultContracts.GetContent(),
         onResult = { uri: Uri? ->
             imageUri = uri
-            // Set imageURL to an empty string to avoid confusion
+
             imageURL = ""
         }
     )
@@ -122,96 +122,3 @@ fun CreateCardScreen(
     }
 }
 
-
-//
-//@Composable
-//fun CreateCardScreen (
-//    navController: NavController,
-//
-//    viewModel: CyrusHiltViewModel = hiltViewModel()
-//){
-//    var nameText by remember { mutableStateOf("") }
-//    var imageURL by remember { mutableStateOf("") }
-//    var imageUri by remember { mutableStateOf<Uri?>(null) }
-//    val context = LocalContext.current
-//
-//    // Image picker launcher
-//    val imagePickerLauncher = rememberLauncherForActivityResult(
-//        contract = ActivityResultContracts.GetContent(),
-//        onResult = { uri: Uri? ->
-//            imageUri = uri
-//            imageURL = uri?.toString() ?: ""
-//        }
-//    )
-//
-//
-//    Column (
-//        modifier = Modifier
-//            .fillMaxSize(),
-//        horizontalAlignment = Alignment.CenterHorizontally,
-//        verticalArrangement = Arrangement.Center
-//
-//    ) {
-//        //icon that can later be replaced by an image
-//
-//        if (imageUri != null) {
-//            Image(
-//                painter = rememberAsyncImagePainter(model = imageUri),
-//                contentDescription = "Selected Image",
-//                modifier = Modifier.size(100.dp)
-//            )
-//        } else {
-//            Icon(
-//                imageVector = Icons.Default.Person,
-//                contentDescription = "person",
-//                modifier = Modifier.size(100.dp)
-//            )
-//        }
-////        Icon(
-////            imageVector = Icons.Default.Person,
-////            contentDescription = "person",
-////            modifier = Modifier.size(100.dp)
-////        )
-//        Spacer (modifier = Modifier.height(16.dp))
-//        Text("Create a student",
-//            fontSize = 30.sp,
-//            fontWeight = FontWeight.Bold
-//        )
-//        Spacer (modifier = Modifier.height(16.dp))
-//
-//        TextField(
-//            value = nameText,
-//            onValueChange = {nameText = it},
-//            label = { Text("Enter a name") }
-//        )
-//        Spacer (modifier = Modifier.height(16.dp))
-//        TextField(
-//            value = imageText,
-//            onValueChange = {imageText = it},
-//            label = { Text("Enter a url for the image") }
-//        )
-//
-//        Button(
-//            onClick = {
-//                imagePickerLauncher.launch("image/*")
-//            }
-//        ) {
-//            Text("Upload Image")
-//        }
-//
-//        //Button to create the card
-//        Button (
-//            onClick = {
-//                //find the deck in DataSource that corresponds to the
-//                //deck in currentDeck and add a card?
-//                val currentDeckID = viewModel.getCurrentDeckId()
-//                viewModel.createCard(currentDeckID, nameText, imageText)
-//                navController.popBackStack()
-//
-//            }
-//        ) {
-//            Text("Create Student")
-//        }
-//
-//    }
-//}
